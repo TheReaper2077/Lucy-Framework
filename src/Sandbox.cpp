@@ -37,14 +37,14 @@ std::vector<Vertex2D> vertices = {
 	{ Vec3(x + 200, y + 200, 100), Vec3(0, 0, 0) },
 };
 
-Shader* ashader;
+Shader* shader;
 UniformBuffer *ubo;
 
 void Sandbox::Init() {
-	ashader = shaderprogram::Create("D:\\C++\\Lucy Framework\\src\\Shaders\\default.vs", "D:\\C++\\Lucy Framework\\src\\Shaders\\color.fs");
-	shaderprogram::BindUniformBlock(ashader, "ProjectionMatrix", 0);
+	shader = Shader_Create("D:\\C++\\Lucy Framework\\src\\Shaders\\default.vs", "D:\\C++\\Lucy Framework\\src\\Shaders\\color.fs");
+	Shader_BindUniformBlock(shader, "ProjectionMatrix", 0);
 
-	ubo = uniformbuffer::Create();
+	ubo = UniformBuffer_Create();
 }
 
 float fov = 0;

@@ -1,14 +1,14 @@
 #include "OpenGL.h"
 
-extern std::shared_ptr<OpenGLContext> context;
+extern std::shared_ptr<OpenGLContext> gl_context;
 
 // experimental Haven't Tested
 SpriteAtlas *Texture_SpriteAtlas_LoadFile(int tilex, int tiley, int tilew, int tileh, const char* filename) {
-	assert(context != nullptr);
+	assert(gl_context != nullptr);
 
 	auto spriteatlas = std::make_shared<SpriteAtlas>();
 
-	spriteatlas->texture = Create();
+	spriteatlas->texture = Texture_Create();
 	TextureArray_Bind(spriteatlas->texture);
 
 	glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_RGBA, tilew, tileh, tilex * tiley, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
@@ -60,7 +60,7 @@ SpriteAtlas *Texture_SpriteAtlas_LoadFile(int tilex, int tiley, int tilew, int t
 	spriteatlas->texture->height = height;
 	spriteatlas->texture->channels = channels;
 
-	context->sprite_atlas_store.push_back(spriteatlas);
+	gl_context->sprite_atlas_store.push_back(spriteatlas);
 
 	return spriteatlas.get();
 }

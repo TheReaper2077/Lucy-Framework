@@ -1,49 +1,48 @@
 #include "OpenGL.h"
 
-extern std::shared_ptr<OpenGLContext> context;
+extern std::shared_ptr<OpenGLContext> gl_context;
 
-namespace uniformbuffer {
-	UniformBuffer* Create() {
-		assert(context != nullptr);
 
-		auto uniformbuffer = std::make_shared<UniformBuffer>();
+UniformBuffer *UniformBuffer_Create() {
+	assert(gl_context != nullptr);
 
-		glGenBuffers(1, &uniformbuffer->id);
-		uniformbuffer->size = 0;
+	auto uniformbuffer = std::make_shared<UniformBuffer>();
 
-		context->uniform_buffer_store.push_back(uniformbuffer);
+	glGenBuffers(1, &uniformbuffer->id);
+	uniformbuffer->size = 0;
 
-		return uniformbuffer.get();
-	}
+	gl_context->uniform_buffer_store.push_back(uniformbuffer);
 
-	void Allocate(UniformBuffer * uniformbuffer, std::size_t size) {
-		if (uniformbuffer->size > size) return;
+	return uniformbuffer.get();
+}
 
-		Bind(uniformbuffer);
-		glBufferData(GL_UNIFORM_BUFFER, size, nullptr, GL_DYNAMIC_DRAW);
-		uniformbuffer->size = size;
-	};
+void UniformBuffer_Allocate(UniformBuffer *uniformbuffer, std::size_t size) {
+	if (uniformbuffer->size > size) return;
 
-	void AddDataDynamic(UniformBuffer * uniformbuffer, void* data, std::size_t size, std::size_t offset) {
-		assert(offset + size <= uniformbuffer->size);
+	UniformBuffer_Bind(uniformbuffer);
+	glBufferData(GL_UNIFORM_BUFFER, size, nullptr, GL_DYNAMIC_DRAW);
+	uniformbuffer->size = size;
+};
 
-		Bind(uniformbuffer);
-		glBufferSubData(GL_UNIFORM_BUFFER, offset, size, data);
-	}
+void UniformBuffer_AddDataDynamic(UniformBuffer *uniformbuffer, void* data, std::size_t size, std::size_t offset) {
+	assert(offset + size <= uniformbuffer->size);
 
-	void BindRange(UniformBuffer * uniformbuffer, unsigned int index, std::size_t size, std::size_t offset) {
-		Bind(uniformbuffer);
-		glBindBufferRange(GL_UNIFORM_BUFFER, index, uniformbuffer->id, offset, size);
-	}
+	UniformBuffer_Bind(uniformbuffer);
+	glBufferSubData(GL_UNIFORM_BUFFER, offset, size, data);
+}
 
-	void Bind(UniformBuffer * uniformbuffer) {
-		if (context->binding_uniformbuffer == uniformbuffer->id) return;
-		context->binding_uniformbuffer = uniformbuffer->id;
-		glBindBuffer(GL_UNIFORM_BUFFER, uniformbuffer->id);
-	}
+void UniformBuffer_BindRange(UniformBuffer *uniformbuffer, unsigned int index, std::size_t size, std::size_t offset) {
+	UniformBuffer_Bind(uniformbuffer);
+	glBindBufferRange(GL_UNIFORM_BUFFER, index, uniformbuffer->id, offset, size);
+}
 
-	void UnBind() {
-		context->binding_uniformbuffer = 0;
-		glBindBuffer(GL_UNIFORM_BUFFER, 0);
-	}
+void UniformBuffer_Bind(UniformBuffer *uniformbuffer) {
+	if (gl_context->binding_uniformbuffer == uniformbuffer->id) return;
+	gl_context->binding_uniformbuffer = uniformbuffer->id;
+	glBindBuffer(GL_UNIFORM_BUFFER, uniformbuffer->id);
+}
+
+void UniformBuffer_UnBind() {
+	gl_context->binding_uniformbuffer = 0;
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }

@@ -32,6 +32,6 @@ MeshIndices *CreateMeshIndices() {
 >>>>>>> parent of 1b39039 (refractor):src/Render/MeshRenderer.cpp
 
 	rendercontext->meshindices_store.push_back(meshindices);
-
+	
 	return meshindices.get();
 }

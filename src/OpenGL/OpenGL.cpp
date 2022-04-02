@@ -1,11 +1,11 @@
 #include "OpenGL.h"
 
-std::shared_ptr<OpenGLContext> context;
+std::shared_ptr<OpenGLContext> gl_context;
  
 void OpenGL_CreateContext() {
-	assert(context == nullptr);
+	assert(gl_context == nullptr);
 
-	context = std::make_shared<OpenGLContext>();
+	gl_context = std::make_shared<OpenGLContext>();
 }
 
 void OpenGL_DestroyContext() {
