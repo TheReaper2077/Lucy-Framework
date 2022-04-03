@@ -78,3 +78,35 @@ void lf::TransferMeshIndices(lf::MeshIndices* meshindices) {
 	IndexBuffer_AddData(meshindices->indexbuffer, meshindices->indices.data(), meshindices->indices.size()*sizeof(uint32_t));
 	meshindices->indexcount = meshindices->indices.size();
 }
+
+void lf::RenderMesh(lf::Mesh *mesh, Shader *shader) {
+	assert(lf_context != nullptr);
+	assert(mesh != nullptr);
+	assert(shader != nullptr);
+
+	auto* vao = lf_context->layout_vao_map[mesh->layout];
+
+	VertexArray_Bind(vao);
+	VertexArray_BindVertexBuffer(vao, mesh->vertexbuffer, vao->stride);
+
+	switch (mesh->type) {
+		case lf::RenderType::POINTS:
+			glDrawArrays(GL_POINTS, 0, mesh->vertexcount);
+			break;
+		case lf::RenderType::LINES:
+			glDrawArrays(GL_LINES, 0, mesh->vertexcount);
+			break;
+		case lf::RenderType::LINE_STRIP:
+			glDrawArrays(GL_LINE_STRIP, 0, mesh->vertexcount);
+			break;
+		case lf::RenderType::TRIANGLES:
+			glDrawArrays(GL_TRIANGLES, 0, mesh->vertexcount);
+			break;
+		case lf::RenderType::TRIANGLE_STRIP:
+			glDrawArrays(GL_TRIANGLE_STRIP, 0, mesh->vertexcount);
+			break;
+		case lf::RenderType::TRIANGLE_INDEXED:
+			glDrawElements(GL_TRIANGLES, mesh->meshindices->indexcount, GL_UNSIGNED_INT, nullptr);
+			break;
+	}
+}
