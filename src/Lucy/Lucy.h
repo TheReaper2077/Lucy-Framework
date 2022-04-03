@@ -72,8 +72,8 @@ namespace lf {
 	void TransferMesh(Mesh* mesh);
 	void TransferMeshIndices(MeshIndices* meshindices);
 	void RenderMesh(Mesh* mesh, Shader* shader);
-	void DestroyMesh(Mesh* mesh);
 	void ClearMesh(Mesh* mesh);
+	void DestroyMesh(Mesh* mesh);
 
 	// 
 	
@@ -82,8 +82,18 @@ namespace lf {
 		std::vector<std::shared_ptr<MeshIndices>> meshindices_store;
 		std::unordered_map<Layout, VertexArray*> layout_vao_map;
 		std::shared_ptr<Events> event;
+
+		glm::mat4 model;
+		glm::mat4 view;
+		glm::mat4 projection;
+
+		UniformBuffer *mvp_ubo;
 	};
 
 	void CreateContext();
 	void RegisterLayout(Layout layout, const std::vector<VertexArrayLayout> &layouts);
+
+	void SetModel(const glm::mat4& model);
+	void SetView(const glm::mat4& view);
+	void SetProjection(const glm::mat4& projection);
 }

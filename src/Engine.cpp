@@ -19,23 +19,21 @@ void Engine::Init() {
 	glDepthMask(GL_TRUE);
 
 	glfwSetWindowPos(window, 50, 50);
-	glfwSetKeyCallback(window, lf::Events::Key::Callback);
-	glfwSetKeyCallback(window, lf::CameraKeyCallback);
-	glfwSetCursorPosCallback(window, lf::Events::Mouse::CursorPosCallback);
-	glfwSetCursorPosCallback(window, lf::CameraMouseCursorPosCallback);
-	glfwSetMouseButtonCallback(window, lf::Events::Mouse::Callback);
+	glfwSetKeyCallback(window, lf::KeyCallback);
+	glfwSetCursorPosCallback(window, lf::MouseCursorPosCallback);
+	glfwSetMouseButtonCallback(window, lf::MouseButtonCallback);
 
 	// glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-	IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
-	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-	io.ConfigDockingWithShift = true;
+	// IMGUI_CHECKVERSION();
+    // ImGui::CreateContext();
+    // ImGuiIO& io = ImGui::GetIO(); (void)io;
+	// io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+	// io.ConfigDockingWithShift = true;
 
-	ImGui::StyleColorsDark();
-	ImGui_ImplGlfw_InitForOpenGL(window, true);
-    ImGui_ImplOpenGL3_Init("#version 400");
+	// ImGui::StyleColorsDark();
+	// ImGui_ImplGlfw_InitForOpenGL(window, true);
+    // ImGui_ImplOpenGL3_Init("#version 400");
 
 	// glGenFramebuffers(1, &framebuffer);
 	// glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
@@ -73,11 +71,11 @@ void Engine::Mainloop() {
 	while (!glfwWindowShouldClose(window)) {
 		const auto& start_time = std::chrono::high_resolution_clock::now();
 		
-		ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
+		// ImGui_ImplOpenGL3_NewFrame();
+        // ImGui_ImplGlfw_NewFrame();
+        // ImGui::NewFrame();
 
-		glEnable(GL_DEPTH_TEST);
+		// glEnable(GL_DEPTH_TEST);
 
 		// glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 
@@ -89,8 +87,8 @@ void Engine::Mainloop() {
 			layer->Update(dt);
 		}
 
-		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		// ImGui::Render();
+		// ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		
 		glfwSwapBuffers(window);
 

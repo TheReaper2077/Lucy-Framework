@@ -2,7 +2,7 @@
 
 extern std::shared_ptr<lf::Lucy> lf_context;
 
-lf::Mesh* CreateMesh(lf::Layout layout, lf::RenderType type, lf::MeshIndices* meshindices) {
+lf::Mesh* lf::CreateMesh(lf::Layout layout, lf::RenderType type, lf::MeshIndices* meshindices) {
 	assert(lf_context != nullptr);
 
 	auto mesh = std::make_shared<lf::Mesh>();
@@ -35,7 +35,7 @@ lf::Mesh* CreateMesh(lf::Layout layout, lf::RenderType type, lf::MeshIndices* me
 	return mesh.get();
 }
 
-lf::MeshIndices* lf::CreateMeshIndices(lf::Layout layout = lf::Layout::None) {
+lf::MeshIndices* lf::CreateMeshIndices(lf::Layout layout) {
 	assert(lf_context != nullptr);
 
 	auto meshindices = std::make_shared<lf::MeshIndices>();
@@ -61,9 +61,9 @@ void lf::TransferMesh(lf::Mesh* mesh) {
 
 	auto* vertexarray = lf_context->layout_vao_map[mesh->layout];
 
-	VertexBuffer_Allocate(mesh->vertexbuffer, vertexarray->stride*mesh->vertices.size());
-	VertexBuffer_AddDataDynamic(mesh->vertexbuffer, mesh->vertices.data(), vertexarray->stride*mesh->vertices.size());
-	mesh->vertexcount = mesh->vertices.size();
+	VertexBuffer_Allocate(mesh->vertexbuffer, mesh->vertices.size()*sizeof(mesh->vertices[0]));
+	VertexBuffer_AddDataDynamic(mesh->vertexbuffer, mesh->vertices.data(), mesh->vertices.size()*sizeof(mesh->vertices[0]));
+	mesh->vertexcount = mesh->vertices.size()*sizeof(mesh->vertices[0]) / vertexarray->stride;
 
 	if (mesh->meshindices == nullptr) return;
 	if (mesh->meshindices->shared) return;
@@ -79,15 +79,16 @@ void lf::TransferMeshIndices(lf::MeshIndices* meshindices) {
 	meshindices->indexcount = meshindices->indices.size();
 }
 
-void lf::RenderMesh(lf::Mesh *mesh, Shader *shader) {
+void lf::RenderMesh(lf::Mesh* mesh, Shader* shader) {
 	assert(lf_context != nullptr);
 	assert(mesh != nullptr);
 	assert(shader != nullptr);
 
-	auto* vao = lf_context->layout_vao_map[mesh->layout];
+	auto* vertexarray = lf_context->layout_vao_map[mesh->layout];
 
-	VertexArray_Bind(vao);
-	VertexArray_BindVertexBuffer(vao, mesh->vertexbuffer, vao->stride);
+	Shader_Bind(shader);
+	VertexArray_Bind(vertexarray);
+	VertexArray_BindVertexBuffer(vertexarray, mesh->vertexbuffer, vertexarray->stride);
 
 	switch (mesh->type) {
 		case lf::RenderType::POINTS:
@@ -106,7 +107,13 @@ void lf::RenderMesh(lf::Mesh *mesh, Shader *shader) {
 			glDrawArrays(GL_TRIANGLE_STRIP, 0, mesh->vertexcount);
 			break;
 		case lf::RenderType::TRIANGLE_INDEXED:
+			VertexArray_BindIndexBuffer(vertexarray, mesh->meshindices->indexbuffer);
 			glDrawElements(GL_TRIANGLES, mesh->meshindices->indexcount, GL_UNSIGNED_INT, nullptr);
 			break;
 	}
+}
+
+void lf::ClearMesh(lf::Mesh* mesh) {
+	mesh->vertices.clear();
+	mesh->vertexcount = 0;
 }

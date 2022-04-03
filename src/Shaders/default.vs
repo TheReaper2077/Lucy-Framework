@@ -24,4 +24,5 @@ void main() {
     // f_normals = mat3(transpose(inverse(model))) * v_normals;
 
 	gl_Position = projection * view * vec4(frag_pos, 1.0);
+	// gl_Position = vec4(v_pos, 1.0f);
 }
