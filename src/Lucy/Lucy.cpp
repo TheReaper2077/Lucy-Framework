@@ -40,17 +40,6 @@ void lf::SetModel(const glm::mat4& model) {
 	UniformBuffer_AddDataDynamic(lf_context->mvp_ubo, &lf_context->model[0][0], sizeof(glm::mat4), 0*sizeof(glm::mat4));
 }
 
-void lf::SetModel(float x, float y, float z, float zoom) {
-	assert(lf_context != nullptr);
-
-	glm::mat4 model = glm::mat4(1.0f);
-	model = glm::rotate(model, x, glm::vec3(1, 0, 0));
-	model = glm::rotate(model, y, glm::vec3(0, 1, 0));
-	model = glm::rotate(model, z, glm::vec3(0, 0, 1));
-
-	SetModel(model);
-}
-
 void lf::SetView(const glm::mat4& view) {
 	assert(lf_context != nullptr);
 
@@ -85,4 +74,19 @@ void lf::Update() {
 
 double& lf::GetTimeStep() {
 	return lf_context->dt;
+}
+
+void lf::ToggleWireframe(bool wireframe) {
+	assert(lf_context != nullptr);
+
+	if (wireframe && !lf_context->wireframe) {
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		std::cout << "L\n";
+		lf_context->wireframe = wireframe;
+	}
+	if (!wireframe && lf_context->wireframe) {
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		std::cout << "F\n";
+		lf_context->wireframe = wireframe;
+	}
 }

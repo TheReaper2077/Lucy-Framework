@@ -5,6 +5,7 @@
 #include "Math/Vec4.inl"
 
 #include "Lucy/Lucy.h"
+#include "Lucy/Draw.h"
 
 
 int x = 0, y = 0, w = 100, h = 100;
@@ -34,7 +35,7 @@ std::vector<Vec3> vertices = {
 
 Shader* shader;
 UniformBuffer *ubo;
-lf::Mesh *mesh;
+lf::Mesh *mesh, *temp;
 
 float fov = 0;
 
@@ -54,11 +55,15 @@ void Sandbox::Init() {
 	lf::CreateCamera("cam0", lf::ORTHOGRAPHIC);
 	lf::EnableCamera("cam0");
 
-	mesh = lf::CreateMesh(lf::Vertex3D, lf::RenderType::TRIANGLES);
+	mesh = lf::CreateMesh(lf::Vertex3D, lf::TRIANGLES);
+	temp = lf::CreateMesh(lf::Vertex3D, lf::TRIANGLE_INDEXED);
 
 	mesh->vertices = vertices;
 
 	lf::TransferMesh(mesh);
+
+	lf::FillRect(temp, Vec3(-200, -200), Vec3(100, 100), Vec3(1, 1, 0));
+	lf::TransferMesh(temp);
 }
 
 void Sandbox::Update(double dt) {
@@ -67,5 +72,8 @@ void Sandbox::Update(double dt) {
 	// 	if (ImGuiTile(specular_tex, Vec2(256, 256), Vec2(102, 182), Vec2(20, 26)));
 	// }
 	// ImGui::End();
+	lf::ToggleWireframe(lf::IsKeyToggled(GLFW_KEY_E));
+	
 	lf::RenderMesh(mesh, shader);
+	lf::RenderMesh(temp, shader);
 }
