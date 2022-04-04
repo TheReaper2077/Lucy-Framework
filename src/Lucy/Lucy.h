@@ -75,12 +75,49 @@ namespace lf {
 	void ClearMesh(Mesh* mesh);
 	void DestroyMesh(Mesh* mesh);
 
-	// 
+	// -----------------------------------------------------------------------------Camera
+
+	enum ProjectionMode {
+		ORTHOGRAPHIC,
+		PERSPECTIVE
+	};
+
+	struct Camera {
+		ProjectionMode mode;
+
+		Vec3 Front;
+		Vec3 Position;
+		Vec3 Right;
+		Vec3 WorldUp;
+		Vec3 Up;
+
+		bool first_mouse = true;
+		double speed = 0.05;
+		float yaw = -90.0, pitch = 0;
+		float lastX = WIDTH/2, lastY = HEIGHT/2;
+		float zoom = 0.001;
+	};
+
+	void CreateCamera(std::string name, ProjectionMode mode);
+	void EnableCamera(std::string name);
+
+	void CameraKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+	void CameraMouseCursorPosCallback(GLFWwindow* window, double xpos, double ypos);
+
+	// -----------------------------------------------------------------------------Tiles
+
+	struct Tile {
+		Texture *tex;
+	};
+
+	// -----------------------------------------------------------------------------Lucy
 	
 	struct Lucy {
 		std::vector<std::shared_ptr<Mesh>> mesh_store;
 		std::vector<std::shared_ptr<MeshIndices>> meshindices_store;
 		std::unordered_map<Layout, VertexArray*> layout_vao_map;
+		std::unordered_map<std::string, std::shared_ptr<Camera>> camera_map;
+
 		std::shared_ptr<Events> event;
 
 		glm::mat4 model;
@@ -88,12 +125,19 @@ namespace lf {
 		glm::mat4 projection;
 
 		UniformBuffer *mvp_ubo;
+		Camera* camera;
+
+		double dt;
 	};
 
 	void CreateContext();
 	void RegisterLayout(Layout layout, const std::vector<VertexArrayLayout> &layouts);
 
 	void SetModel(const glm::mat4& model);
+	void SetModel(float x, float y, float z, float zoom);
 	void SetView(const glm::mat4& view);
 	void SetProjection(const glm::mat4& projection);
+
+	void Update();
+	double& GetTimeStep();
 }
