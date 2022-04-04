@@ -51,13 +51,8 @@ void Sandbox::Init() {
 	shader = Shader_Create("D:\\C++\\Lucy Framework\\src\\Shaders\\default.vs", "D:\\C++\\Lucy Framework\\src\\Shaders\\color.fs");
 	Shader_BindUniformBlock(shader, "ProjectionMatrix", 0);
 
-	auto model = glm::mat4(1.0f);
-	auto projection = glm::ortho<float>(-WIDTH/2, WIDTH/2, HEIGHT/2, -HEIGHT/2, -1000, 1000);
-	auto view = glm::mat4(1.0f);
-	
-	lf::SetModel(model);
-	lf::SetView(view);
-	lf::SetProjection(projection);
+	lf::CreateCamera("cam0", lf::ORTHOGRAPHIC);
+	lf::EnableCamera("cam0");
 
 	mesh = lf::CreateMesh(lf::Vertex3D, lf::RenderType::TRIANGLES);
 
@@ -67,10 +62,10 @@ void Sandbox::Init() {
 }
 
 void Sandbox::Update(double dt) {
-	lf::RenderMesh(mesh, shader);
-	// rendercontext->dt = dt;
+	lf::Update();
 	// if (ImGui::Begin("Tiles")) {
 	// 	if (ImGuiTile(specular_tex, Vec2(256, 256), Vec2(102, 182), Vec2(20, 26)));
 	// }
 	// ImGui::End();
+	lf::RenderMesh(mesh, shader);
 }

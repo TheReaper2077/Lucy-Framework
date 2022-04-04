@@ -3,6 +3,8 @@
 #include "../OpenGL/OpenGL.h"
 #include "../Math/math.h"
 
+#define LF_UPS 60
+
 namespace lf {
 	// -----------------------------------------------------------------------------Events
 
@@ -17,10 +19,10 @@ namespace lf {
 
 	void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
-	void IsKeyPressed(int key);
-	void IsKeyReleased(int key);
-	void IsKeyTyping(int key);
-	void IsKeyToggled(int key);
+	bool IsKeyPressed(int key);
+	bool IsKeyReleased(int key);
+	bool IsKeyTyping(int key);
+	bool IsKeyToggled(int key);
 
 	void MouseCursorPosCallback(GLFWwindow* window, double xpos, double ypos);
 	void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
@@ -85,23 +87,26 @@ namespace lf {
 	struct Camera {
 		ProjectionMode mode;
 
-		Vec3 Front;
-		Vec3 Position;
-		Vec3 Right;
-		Vec3 WorldUp;
-		Vec3 Up;
+		glm::vec3 Front;
+		glm::vec3 Position;
+		glm::vec3 Right;
+		glm::vec3 WorldUp;
+		glm::vec3 Up;
+		
+		glm::mat4 model;
+		glm::mat4 view;
+		glm::mat4 projection;
 
 		bool first_mouse = true;
 		double speed = 0.05;
 		float yaw = -90.0, pitch = 0;
 		float lastX = WIDTH/2, lastY = HEIGHT/2;
-		float zoom = 0.001;
+		float zoom = 0.001f;
 	};
 
-	void CreateCamera(std::string name, ProjectionMode mode);
+	Camera* CreateCamera(std::string name, ProjectionMode mode);
 	void EnableCamera(std::string name);
-
-	void CameraKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+	void CameraUpdate();
 	void CameraMouseCursorPosCallback(GLFWwindow* window, double xpos, double ypos);
 
 	// -----------------------------------------------------------------------------Tiles
@@ -128,6 +133,8 @@ namespace lf {
 		Camera* camera;
 
 		double dt;
+		std::chrono::steady_clock::time_point end_time;
+		std::chrono::steady_clock::time_point start_time;
 	};
 
 	void CreateContext();

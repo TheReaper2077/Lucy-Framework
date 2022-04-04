@@ -66,3 +66,23 @@ void lf::SetProjection(const glm::mat4& projection) {
 	lf_context->projection = projection;
 	UniformBuffer_AddDataDynamic(lf_context->mvp_ubo, &lf_context->projection[0][0], sizeof(glm::mat4), 2*sizeof(glm::mat4));
 }
+
+void lf::Update() {
+	assert(lf_context != nullptr);
+
+	lf::CameraUpdate();
+
+	if (lf_context->camera != nullptr) {
+		SetProjection(lf_context->camera->projection);
+		SetView(lf_context->camera->view);
+		SetModel(lf_context->camera->model);
+	}
+
+	lf_context->end_time = std::chrono::high_resolution_clock::now();
+	lf_context->dt = std::chrono::duration<double, std::ratio<1, LF_UPS>>(lf_context->end_time - lf_context->start_time).count();
+	lf_context->start_time = std::chrono::high_resolution_clock::now();
+}
+
+double& lf::GetTimeStep() {
+	return lf_context->dt;
+}

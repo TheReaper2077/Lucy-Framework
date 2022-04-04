@@ -11,28 +11,28 @@ void lf::KeyCallback(GLFWwindow* window, int key, int scancode, int action, int 
 	lf_context->event->key_state[key] = action;
 }
 
-void lf::IsKeyPressed(int key) {
+bool lf::IsKeyPressed(int key) {
 	assert(lf_context->event != nullptr);
 
-	(lf_context->event->key_state[key] == GLFW_PRESS || lf_context->event->key_state[key] == GLFW_REPEAT);
+	return (lf_context->event->key_state[key] == GLFW_PRESS || lf_context->event->key_state[key] == GLFW_REPEAT);
 }
 
-void lf::IsKeyReleased(int key) {
+bool lf::IsKeyReleased(int key) {
 	assert(lf_context->event != nullptr);
 
-	(lf_context->event->key_state[key] == GLFW_RELEASE);
+	return (lf_context->event->key_state[key] == GLFW_RELEASE);
 }
 
-void lf::IsKeyTyping(int key) {
+bool lf::IsKeyTyping(int key) {
 	assert(lf_context->event != nullptr);
 
-	(lf_context->event->key_state[key] == GLFW_REPEAT);
+	return (lf_context->event->key_state[key] == GLFW_REPEAT);
 }
 
-void lf::IsKeyToggled(int key) {
+bool lf::IsKeyToggled(int key) {
 	assert(lf_context->event != nullptr);
 
-	lf_context->event->key_toggled[key];
+	return lf_context->event->key_toggled[key];
 }
 
 void lf::MouseCursorPosCallback(GLFWwindow* window, double xpos, double ypos) {

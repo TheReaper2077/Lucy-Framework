@@ -19,8 +19,11 @@ void Engine::Init() {
 	glDepthMask(GL_TRUE);
 
 	glfwSetWindowPos(window, 50, 50);
+	
 	glfwSetKeyCallback(window, lf::KeyCallback);
 	glfwSetCursorPosCallback(window, lf::MouseCursorPosCallback);
+	
+	glfwSetCursorPosCallback(window, lf::CameraMouseCursorPosCallback);
 	glfwSetMouseButtonCallback(window, lf::MouseButtonCallback);
 
 	// glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
