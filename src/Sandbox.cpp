@@ -33,7 +33,7 @@ std::vector<Vec3> vertices = {
 	Vec3(x + 200, y + 200, 100), Vec3(0, 0, 0),
 };
 
-Shader* shader;
+Shader* shader, *tex_shader;
 UniformBuffer *ubo;
 lf::Mesh *mesh, *temp;
 
@@ -50,7 +50,9 @@ void Sandbox::Init() {
 	lf::CreateContext();
 
 	shader = Shader_Create("D:\\C++\\Lucy Framework\\src\\Shaders\\default.vs", "D:\\C++\\Lucy Framework\\src\\Shaders\\color.fs");
+	tex_shader = Shader_Create("D:\\C++\\Lucy Framework\\src\\Shaders\\default.vs", "D:\\C++\\Lucy Framework\\src\\Shaders\\texture.fs");
 	Shader_BindUniformBlock(shader, "ProjectionMatrix", 0);
+	Shader_BindUniformBlock(tex_shader, "ProjectionMatrix", 0);
 
 	lf::CreateCamera("cam0", lf::ORTHOGRAPHIC);
 	lf::EnableCamera("cam0");
@@ -60,20 +62,21 @@ void Sandbox::Init() {
 
 	mesh->vertices = vertices;
 
+	auto* tex = Texture_LoadFile("D:\\C++\\Lucy Framework\\res\\container.png");
+	Texture_BindUnit(tex, 0);
+
 	lf::TransferMesh(mesh);
 
-	lf::FillRect(temp, Vec3(-200, -200), Vec3(100, 100), Vec3(1, 1, 0));
+	// lf::FillRect(temp, Vec3(-200, -200), Vec3(100, 100), Vec3(1, 1, 0));
+	lf::TextureRect(temp, tex, Vec3(-200, -200), Vec3(100, 100));
 	lf::TransferMesh(temp);
 }
 
 void Sandbox::Update(double dt) {
 	lf::Update();
-	// if (ImGui::Begin("Tiles")) {
-	// 	if (ImGuiTile(specular_tex, Vec2(256, 256), Vec2(102, 182), Vec2(20, 26)));
-	// }
-	// ImGui::End();
+	
 	lf::ToggleWireframe(lf::IsKeyToggled(GLFW_KEY_E));
 	
 	lf::RenderMesh(mesh, shader);
-	lf::RenderMesh(temp, shader);
+	lf::RenderMesh(temp, tex_shader);
 }

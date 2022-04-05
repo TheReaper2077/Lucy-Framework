@@ -81,12 +81,10 @@ void lf::ToggleWireframe(bool wireframe) {
 
 	if (wireframe && !lf_context->wireframe) {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		std::cout << "L\n";
 		lf_context->wireframe = wireframe;
 	}
 	if (!wireframe && lf_context->wireframe) {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		std::cout << "F\n";
 		lf_context->wireframe = wireframe;
 	}
 }

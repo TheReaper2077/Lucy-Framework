@@ -44,17 +44,17 @@ namespace lf {
 
 	void DrawRect(Mesh *mesh, float v0x, float v0y, float v1x, float v1y, const Vec3& color, const int& thickness);
 	void FillRect(Mesh *mesh, float v0x, float v0y, float v1x, float v1y, const Vec3& color);
-	// void TextureRect(Mesh *mesh, Texture *tex, float v0x, float v0y, float v1x, float v1y, const Vec2& uv0 = Vec2(0, 0), const Vec2& uv1 = Vec2(1, 1));
+	void TextureRect(Mesh *mesh, Texture *tex, float v0x, float v0y, float v1x, float v1y, const Vec2& uv0 = Vec2(0, 0), const Vec2& uv1 = Vec2(1, 1));
 
 	void DrawRect(Mesh *mesh, const Vec3& pos, const Vec3& scale, const Vec3& color, const int& thickness);
 	void FillRect(Mesh *mesh, const Vec3& pos, const Vec3& scale, const Vec3& color);
 	void TextureRect(Mesh *mesh, Texture *tex, const Vec3& pos, const Vec3& scale, const Vec2& uv0 = Vec2(0, 0), const Vec2& uv1 = Vec2(1, 1));
 	
-	void DrawRect(Mesh *mesh, const Vec2& pos, const Vec2& scale, const Vec3& color, const int& thickness);
-	void FillRect(Mesh *mesh, const Vec2& pos, const Vec2& scale, const Vec3& color);
-	void TextureRect(Mesh *mesh, Texture *tex, const Vec2& pos, const Vec2& scale, const Vec2& uv0 = Vec2(0, 0), const Vec2& uv1 = Vec2(1, 1));
+	// void DrawRect(Mesh *mesh, const Vec2& pos, const Vec2& scale, const Vec3& color, const int& thickness);
+	// void FillRect(Mesh *mesh, const Vec2& pos, const Vec2& scale, const Vec3& color);
+	// void TextureRect(Mesh *mesh, Texture *tex, const Vec2& pos, const Vec2& scale, const Vec2& uv0 = Vec2(0, 0), const Vec2& uv1 = Vec2(1, 1));
 
-	void DrawRect(Mesh *mesh, const Rect& rect, const Vec3& color, const int& thickness);
-	void FillRect(Mesh *mesh, const Rect& rect, const Vec3& color);
-	void TextureRect(Mesh *mesh, Texture *tex, const Rect& rect, const Vec2& uv0 = Vec2(0, 0), const Vec2& uv1 = Vec2(1, 1));
+	// void DrawRect(Mesh *mesh, const Rect& rect, const Vec3& color, const int& thickness);
+	// void FillRect(Mesh *mesh, const Rect& rect, const Vec3& color);
+	// void TextureRect(Mesh *mesh, Texture *tex, const Rect& rect, const Vec2& uv0 = Vec2(0, 0), const Vec2& uv1 = Vec2(1, 1));
 }
