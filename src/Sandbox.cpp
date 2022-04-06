@@ -49,10 +49,8 @@ bool ImGuiTile(Texture *tex, const Vec2 &size, const Vec2 &tile_pos, const Vec2 
 void Sandbox::Init() {
 	lf::CreateContext();
 
-	shader = Shader_Create("D:\\C++\\Lucy Framework\\src\\Shaders\\default.vs", "D:\\C++\\Lucy Framework\\src\\Shaders\\color.fs");
-	tex_shader = Shader_Create("D:\\C++\\Lucy Framework\\src\\Shaders\\default.vs", "D:\\C++\\Lucy Framework\\src\\Shaders\\texture.fs");
-	Shader_BindUniformBlock(shader, "ProjectionMatrix", 0);
-	Shader_BindUniformBlock(tex_shader, "ProjectionMatrix", 0);
+	lf::RegisterShader("color", "D:\\C++\\Lucy Framework\\src\\Shaders\\default.vs", "D:\\C++\\Lucy Framework\\src\\Shaders\\color.fs");
+	lf::RegisterShader("texture", "D:\\C++\\Lucy Framework\\src\\Shaders\\default.vs", "D:\\C++\\Lucy Framework\\src\\Shaders\\texture.fs");
 
 	lf::CreateCamera("cam0", lf::ORTHOGRAPHIC);
 	lf::EnableCamera("cam0");
@@ -63,12 +61,14 @@ void Sandbox::Init() {
 	mesh->vertices = vertices;
 
 	auto* tex = Texture_LoadFile("D:\\C++\\Lucy Framework\\res\\container.png");
-	Texture_BindUnit(tex, 0);
 
 	lf::TransferMesh(mesh);
 
-	// lf::FillRect(temp, Vec3(-200, -200), Vec3(100, 100), Vec3(1, 1, 0));
-	lf::TextureRect(temp, tex, Vec3(-200, -200), Vec3(100, 100));
+	lf::FillRect(temp, Vec3(-200, -300), Vec3(100, 100), Vec3(1, 1, 0));
+	// lf::TextureRect(temp, tex, Vec3(-200, -300), Vec3(100, 100));
+	// lf::TextureRect(temp, tex, Vec3(-200, -200), Vec3(100, 100));
+	// lf::TextureRect(temp, tex, Vec3(-300, -300), Vec3(100, 100));
+	
 	lf::TransferMesh(temp);
 }
 
@@ -77,6 +77,6 @@ void Sandbox::Update(double dt) {
 	
 	lf::ToggleWireframe(lf::IsKeyToggled(GLFW_KEY_E));
 	
-	lf::RenderMesh(mesh, shader);
-	lf::RenderMesh(temp, tex_shader);
+	lf::RenderMesh(mesh, "color");
+	lf::RenderMesh(temp, "color");
 }

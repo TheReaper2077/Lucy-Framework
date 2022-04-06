@@ -51,6 +51,7 @@ namespace lf {
 	MeshIndices* CreateMeshIndices(Layout layout = Layout::None);
 	void TransferMesh(Mesh* mesh);
 	void TransferMeshIndices(MeshIndices* meshindices);
+	void RenderMesh(Mesh* mesh, std::string name);
 	void RenderMesh(Mesh* mesh, Shader* shader);
 	void ClearMesh(Mesh* mesh);
 	void DestroyMesh(Mesh* mesh);
@@ -78,12 +79,15 @@ namespace lf {
 
 	struct Tile;
 
-	// -----------------------------------------------------------------------------Lucy
+	// -----------------------------------------------------------------------------Lucy Framework
 	
 	struct Lucy;
 
 	void CreateContext();
 	void RegisterLayout(Layout layout, const std::vector<VertexArrayLayout> &layouts);
+
+	Shader* RegisterShader(std::string name, std::string vs_filename, std::string fs_filename);
+	Shader *GetShader(std::string name);
 
 	void SetModel(const glm::mat4& model);
 	void SetView(const glm::mat4& view);

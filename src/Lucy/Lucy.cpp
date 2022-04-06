@@ -31,6 +31,24 @@ void lf::RegisterLayout(Layout layout, const std::vector<VertexArrayLayout> &lay
 	lf_context->layout_vao_map[layout] = VertexArray_Create(layouts);
 }
 
+Shader* lf::RegisterShader(std::string name, std::string vs_filename, std::string fs_filename) {
+	assert(lf_context != nullptr);
+	assert(lf_context->shader_map.find(name) == lf_context->shader_map.end());
+
+	auto* shader = Shader_Create(vs_filename, fs_filename);
+	Shader_BindUniformBlock(shader, "ProjectionMatrix", 0);
+	lf_context->shader_map[name] = shader;
+
+	return shader;
+}
+
+Shader *lf::GetShader(std::string name) {
+	assert(lf_context != nullptr);
+	assert(lf_context->shader_map.find(name) != lf_context->shader_map.end());
+	
+	return lf_context->shader_map[name];
+}
+
 void lf::SetModel(const glm::mat4& model) {
 	assert(lf_context != nullptr);
 

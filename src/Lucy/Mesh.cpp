@@ -79,12 +79,22 @@ void lf::TransferMeshIndices(lf::MeshIndices* meshindices) {
 	meshindices->indexcount = meshindices->indices.size();
 }
 
+void lf::RenderMesh(Mesh* mesh, std::string name) {
+	assert(lf_context != nullptr);
+
+	lf::RenderMesh(mesh, lf_context->shader_map[name]);
+}
+
 void lf::RenderMesh(lf::Mesh* mesh, Shader* shader) {
 	assert(lf_context != nullptr);
 	assert(mesh != nullptr);
 	assert(shader != nullptr);
 
 	auto* vertexarray = lf_context->layout_vao_map[mesh->layout];
+
+	for (int i = 0; i < mesh->textures.size(); i++) {
+		Texture_BindUnit(mesh->textures[i], i);
+	}
 
 	Shader_Bind(shader);
 	VertexArray_Bind(vertexarray);

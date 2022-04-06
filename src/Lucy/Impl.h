@@ -29,6 +29,7 @@ namespace lf {
 		MeshIndices* meshindices = nullptr;
 
 		std::vector<Vec3> vertices;
+		std::vector<Texture*> textures;
 		VertexBuffer* vertexbuffer = nullptr;
 		uint32_t vertexcount = 0;
 	};
@@ -64,6 +65,7 @@ namespace lf {
 		std::vector<std::shared_ptr<MeshIndices>> meshindices_store;
 
 		std::unordered_map<Layout, VertexArray*> layout_vao_map;
+		std::unordered_map<std::string, Shader*> shader_map;
 		std::unordered_map<std::string, std::shared_ptr<Camera>> camera_map;
 		std::unordered_map<TileId, Tile> tile_id_map;
 
