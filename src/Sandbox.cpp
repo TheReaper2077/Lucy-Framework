@@ -62,21 +62,30 @@ void Sandbox::Init() {
 
 	auto* tex = Texture_LoadFile("D:\\C++\\Lucy Framework\\res\\container.png");
 
-	lf::TransferMesh(mesh);
-
-	lf::FillRect(temp, Vec3(-200, -300), Vec3(100, 100), Vec3(1, 1, 0));
-	// lf::TextureRect(temp, tex, Vec3(-200, -300), Vec3(100, 100));
-	// lf::TextureRect(temp, tex, Vec3(-200, -200), Vec3(100, 100));
-	// lf::TextureRect(temp, tex, Vec3(-300, -300), Vec3(100, 100));
+	lf::TextureRect(temp, tex, Vec3(-200, -300), Vec3(100, 100));
+	lf::TextureRect(temp, tex, Vec3(-200, -200), Vec3(100, 100));
+	lf::TextureRect(temp, tex, Vec3(-300, -300), Vec3(100, 100));
 	
 	lf::TransferMesh(temp);
+	lf::ClearMesh(temp);
+
+	lf::TransferMesh(mesh);
+	lf::ClearMesh(mesh);
 }
+
+Vec3 mag(150, 30, 0);
 
 void Sandbox::Update(double dt) {
 	lf::Update();
 	
 	lf::ToggleWireframe(lf::IsKeyToggled(GLFW_KEY_E));
+
+	if (ImGui::Begin("Camera")) {
+		ImGui::SliderFloat3("x, y, z", &mag[0], 0, 360, nullptr, 1);
+		lf::CameraView(mag);
+	};
+	ImGui::End();
 	
 	lf::RenderMesh(mesh, "color");
-	lf::RenderMesh(temp, "color");
+	lf::RenderMesh(temp, "texture");
 }

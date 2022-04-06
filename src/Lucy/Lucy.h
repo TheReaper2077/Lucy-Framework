@@ -68,7 +68,7 @@ namespace lf {
 	Camera* CreateCamera(std::string name, ProjectionMode mode);
 	Camera* GetCamera(std::string name);
 	void EnableCamera(std::string name);
-	void CameraView(float x, float y, float z);
+	void CameraView(const Vec3 &mag);
 	void CameraView(float zoom);
 	void CameraUpdate();
 	void CameraMouseCursorPosCallback(GLFWwindow* window, double xpos, double ypos);

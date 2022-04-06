@@ -25,13 +25,13 @@ lf::Camera* lf::CreateCamera(std::string name, ProjectionMode mode) {
 	return camera.get();
 }
 
-void lf::CameraView(float x, float y, float z) {
+void lf::CameraView(const Vec3 &mag) {
 	assert(lf_context->camera != nullptr);
 
 	glm::mat4 model = glm::mat4(1.0f);
-	model = glm::rotate(model, x, glm::vec3(1, 0, 0));
-	model = glm::rotate(model, y, glm::vec3(0, 1, 0));
-	model = glm::rotate(model, z, glm::vec3(0, 0, 1));
+	model = glm::rotate(model, glm::radians(mag.x), glm::vec3(1, 0, 0));
+	model = glm::rotate(model, glm::radians(mag.y), glm::vec3(0, 1, 0));
+	model = glm::rotate(model, glm::radians(mag.z), glm::vec3(0, 0, 1));
 
 	lf_context->camera->model = model;
 }

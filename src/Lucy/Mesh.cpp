@@ -125,5 +125,4 @@ void lf::RenderMesh(lf::Mesh* mesh, Shader* shader) {
 
 void lf::ClearMesh(lf::Mesh* mesh) {
 	mesh->vertices.clear();
-	mesh->vertexcount = 0;
 }
