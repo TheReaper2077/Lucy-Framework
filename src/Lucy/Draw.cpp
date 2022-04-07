@@ -32,7 +32,7 @@ static void ConstructRect(lf::DrawType type, lf::Mesh *mesh, Texture *texture, c
 
 		if (type == lf::DrawType::TEXTURE) {
 			assert(mesh->textures.size() < 8);
-			mesh->textures.push_back(texture);
+			if (mesh->textures.find(texture) == mesh->textures.end()) mesh->textures.insert(texture);
 			mesh->vertices.emplace_back(Vec3(v0x, v0y));
 			mesh->vertices.emplace_back(Vec3(uv0.x, uv0.y, index));
 			mesh->vertices.emplace_back(Vec3(v0x, v1y));
@@ -70,7 +70,7 @@ static void ConstructRect(lf::DrawType type, lf::Mesh *mesh, Texture *texture, c
 
 		if (type == lf::DrawType::TEXTURE) {
 			assert(mesh->textures.size() < 8);
-			mesh->textures.push_back(texture);
+			if (mesh->textures.find(texture) == mesh->textures.end()) mesh->textures.insert(texture);
 			mesh->vertices.emplace_back(Vec3(v0x, v0y));
 			mesh->vertices.emplace_back(Vec3(uv0.x, uv0.y, index));
 			mesh->vertices.emplace_back(Vec3(v0x, v1y));

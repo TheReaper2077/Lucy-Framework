@@ -79,18 +79,18 @@ void lf::CameraUpdate() {
 	}
 
 	if (camera->mode == lf::ORTHOGRAPHIC) {	
-		if (lf::IsKeyPressed(GLFW_KEY_W)) {
-			camera->Position.y -= speed;
-		}
-		if (lf::IsKeyPressed(GLFW_KEY_S)) {
-			camera->Position.y += speed;
-		}
-		if (lf::IsKeyPressed(GLFW_KEY_A)) {
-			camera->Position.x -= speed;
-		}
-		if (lf::IsKeyPressed(GLFW_KEY_D)) {
-			camera->Position.x += speed;
-		}
+		// if (lf::IsKeyPressed(GLFW_KEY_W)) {
+		// 	camera->Position.y -= speed;
+		// }
+		// if (lf::IsKeyPressed(GLFW_KEY_S)) {
+		// 	camera->Position.y += speed;
+		// }
+		// if (lf::IsKeyPressed(GLFW_KEY_A)) {
+		// 	camera->Position.x -= speed;
+		// }
+		// if (lf::IsKeyPressed(GLFW_KEY_D)) {
+		// 	camera->Position.x += speed;
+		// }
 
 		camera->view = glm::translate(glm::mat4(1.0f), glm::vec3(camera->Position.x, camera->Position.y, 0));
 	}

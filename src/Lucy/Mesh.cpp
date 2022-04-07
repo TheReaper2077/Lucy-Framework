@@ -92,8 +92,9 @@ void lf::RenderMesh(lf::Mesh* mesh, Shader* shader) {
 
 	auto* vertexarray = lf_context->layout_vao_map[mesh->layout];
 
-	for (int i = 0; i < mesh->textures.size(); i++) {
-		Texture_BindUnit(mesh->textures[i], i);
+	int i = 0;
+	for (auto& tex: mesh->textures) {
+		Texture_BindUnit(tex, i++);
 	}
 
 	Shader_Bind(shader);
@@ -124,5 +125,12 @@ void lf::RenderMesh(lf::Mesh* mesh, Shader* shader) {
 }
 
 void lf::ClearMesh(lf::Mesh* mesh) {
+	mesh->vertexcount = 0;
+	mesh->textures.clear();
 	mesh->vertices.clear();
+
+	if (mesh->meshindices != nullptr) {
+		mesh->meshindices->indices.clear();
+		mesh->meshindices->indexcount = 0;
+	}
 }

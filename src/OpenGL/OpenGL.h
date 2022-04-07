@@ -10,8 +10,8 @@ typedef unsigned int IndexBufferId;
 typedef unsigned int UniformBufferId;
 typedef unsigned int ShaderId;
 typedef unsigned int TextureId;
-typedef unsigned int SpriteAtlasId;
 typedef unsigned int SpriteId;
+typedef unsigned int SpriteAtlasId;
 
 // OpenGLContext
 struct OpenGLContext;
@@ -105,7 +105,7 @@ void Texture_BindUnit(Texture *texture, uint32_t unit);
 void Texture_UnBind();
 void TextureArray_Bind(Texture *texture);
 void TextureArray_UnBind();
-SpriteAtlas *Texture_SpriteAtlas_LoadFile(int tilex, int tiley, int tilew, int tileh, const char* filename);
+SpriteAtlas *Texture_SpriteAtlas_LoadFile(int tilew, int tileh, const char* filename);
 
 // #endif
 

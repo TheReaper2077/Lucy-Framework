@@ -73,11 +73,15 @@ namespace lf {
 	void CameraUpdate();
 	void CameraMouseCursorPosCallback(GLFWwindow* window, double xpos, double ypos);
 
-	// -----------------------------------------------------------------------------Tiles
+	// -----------------------------------------------------------------------------Sprites
 
 	typedef uint32_t TileId;
 
 	struct Tile;
+
+	Tile* LoadTile(const char* filename, const Vec2& pos, const Vec2& scale);
+	Tile* LoadTile(Texture *texture, const Vec2& pos, const Vec2& scale);
+	Tile* GetTile(TileId id);
 
 	// -----------------------------------------------------------------------------Lucy Framework
 	
