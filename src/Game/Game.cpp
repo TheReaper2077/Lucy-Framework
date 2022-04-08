@@ -27,12 +27,6 @@ uint8_t map[20][20] = {
 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 };
 
-void update(entt::registry &registry) {
-	
-
-	
-}
-
 void GameInit() {
 	assert(game == nullptr);
 
@@ -64,11 +58,7 @@ void GameUpdate() {
 	lf::ToggleWireframe(lf::IsKeyToggled(GLFW_KEY_E));
 	lf::ClearMesh(game->mesh);
 
-	for (auto entity: game->registry.view<Transform, const Controllable, Texture*>()) {
-		const auto& controllable = game->registry.get<Controllable>(entity);
-		auto& transform = game->registry.get<Transform>(entity);
-		auto* texture = game->registry.get<Texture*>(entity);
-
+	for (auto [entity, transform, controllable]: game->registry.view<Transform, const Controllable>().each()) {
 		if (controllable) {
 			if (lf::IsKeyPressed(GLFW_KEY_W)) {
 				transform.pos.y -= lf::GetTimeStep()*speed;
@@ -82,23 +72,17 @@ void GameUpdate() {
 			if (lf::IsKeyPressed(GLFW_KEY_D)) {
 				transform.pos.x += lf::GetTimeStep()*speed;
 			}
-
-			transform.pos.z = transform.pos.y;
-
-			// transform.pos = transform.pos.normalize();
+			
+			transform.pos = transform.pos.normalize();
 		}
-
-		lf::TextureRect(game->mesh, texture, transform.pos, transform.scale);
 	}
 
 	// Render
 
-	// for (auto entity: game->registry.view<Transform, Texture*>()) {
-	// 	auto* texture = game->registry.get<Texture*>(entity);
-	// 	auto transform = game->registry.get<Transform>(entity);
+	for (auto [entity, transform, texture]: game->registry.view<Transform, Texture*>().each()) {
 
-	// 	lf::TextureRect(game->mesh, texture, transform.pos, transform.scale);
-	// }
+		lf::TextureRect(game->mesh, texture, transform.pos, transform.scale);
+	}
 
 	lf::TransferMesh(game->mesh);
 	lf::RenderMesh(game->mesh, "texture");
