@@ -23,17 +23,6 @@ namespace lf {
 		Layout layout;
 	};
 
-	// struct Mesh {
-	// 	RenderType type;
-	// 	Layout layout;
-	// 	MeshIndices* meshindices = nullptr;
-
-	// 	std::vector<Vec3> vertices;
-	// 	std::set<Texture*> textures;
-	// 	VertexBuffer* vertexbuffer = nullptr;
-	// 	uint32_t vertexcount = 0;
-	// };
-
 	template <typename T> struct MeshT {
 		RenderType type;
 		Layout layout;

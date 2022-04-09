@@ -40,7 +40,7 @@ uint32_t tex;
 int a[100*100*4];
 
 void Sandbox::Init() {
-	lf::CreateCamera("cam0", lf::PERSPECTIVE);
+	lf::CreateCamera("cam0", lf::ORTHOGRAPHIC);
 	lf::EnableCamera("cam0");
 
 	shader = lf::RegisterShader("sprite", "D:\\C++\\Lucy Framework\\src\\Shaders\\default.vs", "D:\\C++\\Lucy Framework\\src\\Shaders\\color.fs");

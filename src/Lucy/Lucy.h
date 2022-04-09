@@ -95,6 +95,11 @@ namespace lf {
 	Tile* LoadTile(Texture *texture, const Vec2& pos, const Vec2& scale);
 	Tile* GetTile(TileId id);
 
+	// -----------------------------------------------------------------------------Tile
+
+	struct TileChunk;
+	struct TileWorld;
+
 	// -----------------------------------------------------------------------------Lucy Framework
 	
 	struct Lucy;

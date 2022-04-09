@@ -12,6 +12,9 @@ typedef unsigned int ShaderId;
 typedef unsigned int TextureId;
 typedef unsigned int SpriteId;
 typedef unsigned int SpriteAtlasId;
+typedef unsigned int FrameBufferId;
+typedef unsigned int TextureColorBufferId;
+typedef unsigned int RenderBufferId;
 
 // OpenGLContext
 struct OpenGLContext;
@@ -28,8 +31,14 @@ struct Shader;
 struct Texture;
 struct SpriteAtlas;
 
+struct FrameBuffer;
+struct TextureColorBuffer;
+struct RenderBuffer;
+
 void OpenGL_CreateContext();
 void OpenGL_DestroyContext();
+
+FrameBuffer *FrameBuffer_Create();
 
 // #ifndef VERTEX_ARRAY	// VertexArray
 
