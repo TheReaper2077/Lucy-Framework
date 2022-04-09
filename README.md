@@ -12,6 +12,8 @@ I hate OOP so this project is written in FYES (Fuck-You-Eat-Shit) Paradigm. Whic
 
 It's 2AM now and I have Maths exam at 8, I should probably sleep...
 
+Why do I call this stupid piece of shit Lucy ? ( Answer Pending )
+
 # Installation
 
 TODO
