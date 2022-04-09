@@ -1,11 +1,23 @@
 #include "OpenGL.h"
-#include "../util/FileIO.h"
+
+static std::string read_file(const std::string &filename) {
+	std::string line, text;
+	std::fstream file(filename);
+
+	while (std::getline(file, line)) text += (line + '\n');
+
+	file.close();
+
+	return text;
+}
 
 extern std::shared_ptr<OpenGLContext> gl_context;
 
-void Compile(unsigned int &program, const std::string &filename, unsigned int target) {
+void Compile(unsigned int &program, const std::string &filename, unsigned int target, bool file) {
 	unsigned int shader = glCreateShader(target);
-	std::string text = read_file(filename);
+	std::string text;
+	if (file) text = read_file(filename);
+	else text = filename;
 	const char* src = text.c_str();
 	glShaderSource(shader, 1, &src, NULL);
 	glCompileShader(shader);
@@ -27,13 +39,13 @@ void Compile(unsigned int &program, const std::string &filename, unsigned int ta
 	glDeleteShader(shader);
 };
 
-Shader *Shader_Create(const std::string &vs_filename, const std::string &fs_filename) {
+Shader *Shader_Create(const std::string &vs_filename, const std::string &fs_filename, bool file) {
 	assert(gl_context != nullptr);
 
 	unsigned int program = glCreateProgram();
 
-	Compile(program, vs_filename, GL_VERTEX_SHADER);
-	Compile(program, fs_filename, GL_FRAGMENT_SHADER);
+	Compile(program, vs_filename, GL_VERTEX_SHADER, file);
+	Compile(program, fs_filename, GL_FRAGMENT_SHADER, file);
 
 	glLinkProgram(program);
 
@@ -99,9 +111,9 @@ unsigned int Shader_GetUniformLoc(Shader *shader, std::string name) {
 	return shader->uniform_location_map[name];
 }
 
-void Shader_SetUniformMat4(Shader *shader, std::string uniform, const glm::mat4 &matrix) {
+void Shader_SetUniformMat4(Shader *shader, std::string uniform, const float* matrix) {
 	Shader_Bind(shader);
-	glUniformMatrix4fv(Shader_GetUniformLoc(shader, uniform), 1, GL_FALSE, &matrix[0][0]);
+	glUniformMatrix4fv(Shader_GetUniformLoc(shader, uniform), 1, GL_FALSE, matrix);
 }
 
 void Shader_SetUniformi(Shader *shader, std::string uniform, int v0) {

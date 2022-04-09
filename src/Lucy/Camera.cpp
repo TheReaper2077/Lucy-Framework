@@ -11,7 +11,7 @@ lf::Camera* lf::CreateCamera(std::string name, ProjectionMode mode) {
 		camera->projection = glm::ortho<float>(-WIDTH/2, WIDTH/2, HEIGHT/2, -HEIGHT/2, -1000, 1000);
 		camera->view = glm::mat4(1.0f);
 		camera->model = glm::mat4(1.0f);
-		camera->speed = 5;
+		camera->speed = 5.0f;
 	}
 	if (mode == lf::PERSPECTIVE) {
 		camera->projection = glm::perspective(glm::radians(45.0f), (float)WIDTH/HEIGHT, 0.001f, 1000.0f);
@@ -20,7 +20,8 @@ lf::Camera* lf::CreateCamera(std::string name, ProjectionMode mode) {
 		camera->speed = 0.05f;
 	}
 
-	camera->Position = glm::vec3(0, 0, 0);
+	camera->mode = mode;
+	camera->name = name;
 
 	lf_context->camera_map[name] = camera;
 
@@ -50,14 +51,66 @@ void lf::EnableCamera(std::string name) {
 	lf_context->camera = lf_context->camera_map[name].get();
 }
 
-void lf::CameraUpdate() {
+
+void CameraMouseCallback() {
 	if (lf_context->camera == nullptr) return;
+
+	auto xpos = lf::GetMousePosX();
+	auto ypos = lf::GetMousePosY();
+
+	auto* camera = lf_context->camera;
+
+	if (!lf_context->camera->mouse_enabled) {
+		camera->first_mouse = true;
+		return;
+	};
+
+	if (camera->mode == lf::ProjectionMode::PERSPECTIVE) {
+		if (camera->first_mouse) {
+			camera->lastX = xpos;
+			camera->lastY = ypos;
+			camera->first_mouse = false;
+		}
+
+		float xoffset = xpos - camera->lastX;
+		float yoffset = camera->lastY - ypos;
+		camera->lastX = xpos;
+		camera->lastY = ypos;
+
+		float sensitivity = 0.1f;
+		xoffset *= sensitivity;
+		yoffset *= sensitivity;
+
+		camera->yaw += xoffset;
+		camera->pitch += yoffset;
+
+		if (camera->pitch > 89.0f)
+			camera->pitch = 89.0f;
+		if (camera->pitch < -89.0f)
+			camera->pitch = -89.0f;
+
+		camera->Front.x = cos(glm::radians(camera->yaw)) * cos(glm::radians(camera->pitch));
+		camera->Front.y = sin(glm::radians(camera->pitch));
+		camera->Front.z = sin(glm::radians(camera->yaw)) * cos(glm::radians(camera->pitch));
+
+		camera->Front = glm::normalize(camera->Front);
+		camera->Right = glm::normalize(glm::cross(camera->Front, camera->WorldUp));
+        camera->Up = glm::normalize(glm::cross(camera->Right, camera->Front));
+	}
+}
+
+void lf::CameraUpdate() {
+	assert(lf_context->camera != nullptr);
 	
 	auto* camera = lf_context->camera;
 	
 	float speed = (float)camera->speed*lf_context->dt;
 
+	CameraMouseCallback();
+
 	if (camera->mode == lf::PERSPECTIVE) {
+		if (!lf_context->camera->keyboard_enabled) return;
+
 		if (lf::IsKeyPressed(GLFW_KEY_W)) {
 			camera->Position += camera->Front * speed;
 		}
@@ -81,6 +134,8 @@ void lf::CameraUpdate() {
 	}
 
 	if (camera->mode == lf::ORTHOGRAPHIC) {	
+		if (!lf_context->camera->keyboard_enabled) return;
+
 		// if (lf::IsKeyPressed(GLFW_KEY_W)) {
 		// 	camera->Position.y -= speed;
 		// }
@@ -95,42 +150,5 @@ void lf::CameraUpdate() {
 		// }
 
 		camera->view = glm::translate(glm::mat4(1.0f), glm::vec3(camera->Position.x, camera->Position.y, 0));
-	}
-}
-
-void lf::CameraMouseCursorPosCallback(GLFWwindow* window, double xpos, double ypos) {
-	if (lf_context->camera == nullptr) return;
-
-	auto* camera = lf_context->camera;
-
-	if (camera->mode == PERSPECTIVE) {
-		if (camera->first_mouse) {
-			camera->lastX = xpos;
-			camera->lastY = ypos;
-			camera->first_mouse = false;
-		}
-
-		float xoffset = xpos - camera->lastX;
-		float yoffset = camera->lastY - ypos;
-		camera->lastX = xpos;
-		camera->lastY = ypos;
-
-		float sensitivity = 0.1f;
-		xoffset *= sensitivity;
-		yoffset *= sensitivity;
-
-		camera->yaw   += xoffset;
-		camera->pitch += yoffset;
-
-		if (camera->pitch > 89.0f)
-			camera->pitch = 89.0f;
-		if (camera->pitch < -89.0f)
-			camera->pitch = -89.0f;
-
-		camera->Front.x = cos(glm::radians(camera->yaw)) * cos(glm::radians(camera->pitch));
-		camera->Front.y = sin(glm::radians(camera->pitch));
-		camera->Front.z = sin(glm::radians(camera->yaw)) * cos(glm::radians(camera->pitch));
-
-		camera->Front = glm::normalize(camera->Front);
 	}
 }

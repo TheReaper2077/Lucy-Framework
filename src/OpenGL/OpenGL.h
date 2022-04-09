@@ -83,7 +83,7 @@ void UniformBuffer_UnBind();
 // #ifndef SHADER	// Shader
 
 
-Shader *Shader_Create(const std::string &vs_filename, const std::string &fs_filename);
+Shader *Shader_Create(const std::string &vs_filename, const std::string &fs_filename, bool file = true);
 void Shader_Bind(Shader *shader);
 void Shader_UnBind();
 
@@ -94,7 +94,7 @@ void Shader_SetUniformi(Shader *shader, std::string uniform, int v0);
 void Shader_SetUniformf(Shader *shader, std::string uniform, float v0);
 void Shader_SetUniformVec3(Shader *shader, std::string uniform, const float *v);
 void Shader_SetUniformVec4(Shader *shader, std::string uniform, const float *v);
-void Shader_SetUniformMat4(Shader *shader, std::string uniform, const glm::mat4 &matrix);
+void Shader_SetUniformMat4(Shader *shader, std::string uniform, const float* matrix);
 void Shader_SetUniformArray(Shader *shader, std::string uniform, std::size_t count, const float *v);
 
 // Texture

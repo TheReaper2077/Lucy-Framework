@@ -7,18 +7,32 @@
 #include "Lucy/Lucy.h"
 #include "Lucy/Draw.h"
 
-int x = 0, y = 0, w = 100, h = 100;
+int x = 1, y = 1, w = 1, h = 1;
 
 std::vector<Vec3> vertices = {
-	Vec3(x, y, 1), 	Vec3(0, 0, 1),
-	Vec3(x, y + h, 1), Vec3(0, 1, 1),
-	Vec3(x + w, y + h, 1), Vec3(1, 1, 1),
-	Vec3(x + w, y + h, 1), Vec3(1, 1, 1),
-	Vec3(x + w, y, 1), Vec3(1, 0, 1),
-	Vec3(x, y, 1), Vec3(0, 0, 1),
+	Vec3(x, y, 0), 	Vec3(0, 0, 1),
+	Vec3(x, y + h, 0), Vec3(0, 1, 1),
+	Vec3(x + w, y + h, 0), Vec3(1, 1, 1),
+	Vec3(x + w, y + h, 0), Vec3(1, 1, 1),
+	Vec3(x + w, y, 0), Vec3(1, 0, 1),
+	Vec3(x, y, 0), Vec3(0, 0, 1),
+	
+	// Vec3(x + 1, y, 1), 	Vec3(0, 0, 1),
+	// Vec3(x + 1, y + h, 1), Vec3(0, 1, 1),
+	// Vec3(x + 1 + w, y + h, 1), Vec3(1, 1, 1),
+	// Vec3(x + 1 + w, y + h, 1), Vec3(1, 1, 1),
+	// Vec3(x + 1 + w, y, 1), Vec3(1, 0, 1),
+	// Vec3(x + 1, y, 1), Vec3(0, 0, 1),
+
+	// Vec3(x + 1, y, -1), Vec3(0, 0, 1),
+	// Vec3(x + 1, y + h, -1), Vec3(0, 1, 1),
+	// Vec3(x + 1 + w, y + h, -1), Vec3(1, 1, 1),
+	// Vec3(x + 1 + w, y + h, -1), Vec3(1, 1, 1),
+	// Vec3(x + 1 + w, y, -1), Vec3(1, 0, 1),
+	// Vec3(x + 1, y, -1), Vec3(0, 0, 1),
 };
 
-static lf::Mesh* mesh;
+lf::Mesh* mesh;
 static Shader* shader;
 
 uint32_t tex;
@@ -36,37 +50,28 @@ void Sandbox::Init() {
 	mesh->vertices = vertices;
 
 	lf::TransferMesh(mesh);
-
-	glGenTextures(1, &tex);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-	// for (int x = 0; x < 100; x++) {
-	// 	for (int y = 0; y < 100; y++) {
-	// 		a[x * 100 * 4 + y * 4 + 0] = 255;
-	// 		a[x * 100 * 4 + y * 4 + 1] = 255;
-	// 		a[x * 100 * 4 + y * 4 + 2] = 255;
-	// 		a[x * 100 * 4 + y * 4 + 3] = 255;
-	// 	}
-	// }
-
-	// // glTexImage3D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-	// glTexImage3D(GL_TEXTURE_3D, 0, GL_RGBA, 100, 100, 100, 0, GL_RGBA, GL_UNSIGNED_BYTE, a);
 }
-
-Vec3 mag(30, 30, 0);
 
 void Sandbox::Update() {
 	lf::ToggleWireframe(lf::IsKeyToggled(GLFW_KEY_E));
 
-	// if (ImGui::Begin("Camera")) {
-	// 	ImGui::SliderFloat3("x, y, z", &mag[0], 0, 360, nullptr, 1);
-	// 	lf::CameraView(mag);
-	// };
+	static bool toggle;
 
-	// ImGui::End();
+	if (lf::IsMouseToggled(GLFW_MOUSE_BUTTON_3) && !toggle) {
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		lf::GetContext()->camera->mouse_enabled = true;
+		toggle = true;
+	}
+
+	if (!lf::IsMouseToggled(GLFW_MOUSE_BUTTON_3) && toggle) {
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		lf::GetContext()->camera->mouse_enabled = false;
+		toggle = false;
+	}
+
+	static bool show = true;
+
+	ImGui::ShowDemoWindow(&show);
+
 	lf::RenderMesh(mesh, shader);
 }

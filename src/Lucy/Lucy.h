@@ -84,7 +84,6 @@ namespace lf {
 	void CameraView(const Vec3 &mag);
 	void CameraView(float zoom);
 	void CameraUpdate();
-	void CameraMouseCursorPosCallback(GLFWwindow* window, double xpos, double ypos);
 
 	// -----------------------------------------------------------------------------Sprites
 
@@ -106,7 +105,7 @@ namespace lf {
 	template <typename T>
 	void RegisterLayout(const std::vector<VertexArrayLayout> &layouts);
 
-	Shader* RegisterShader(std::string name, std::string vs_filename, std::string fs_filename);
+	Shader* RegisterShader(std::string name, std::string vs_filename, std::string fs_filename, bool file = true, bool bind_block = true);
 	Shader *GetShader(std::string name);
 
 	void SetModel(const glm::mat4& model);
