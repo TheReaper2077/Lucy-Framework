@@ -62,6 +62,8 @@ void Engine::Init() {
 	// assert(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE);
 	// glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
+	lf::CreateContext();
+
 	for (auto& layer: layers) {
 		layer->SetWindow(window);
 		layer->Init();
@@ -72,7 +74,7 @@ void Engine::Init() {
 
 void Engine::Mainloop() {
 	while (!glfwWindowShouldClose(window)) {
-		const auto& start_time = std::chrono::high_resolution_clock::now();
+		lf::Update();
 		
 		ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
@@ -87,16 +89,13 @@ void Engine::Mainloop() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		for (auto& layer: layers) {
-			layer->Update(dt);
+			layer->Update();
 		}
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		
 		glfwSwapBuffers(window);
-
-		const auto& end_time = std::chrono::high_resolution_clock::now();
-		dt = std::chrono::duration<double, std::ratio<1, 60>>(end_time - start_time).count();
 	}
 
 	glfwDestroyWindow(window);

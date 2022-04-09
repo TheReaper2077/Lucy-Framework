@@ -2,7 +2,7 @@
 
 std::shared_ptr<lf::Lucy> lf_context;
 
-void lf::CreateContext() {
+void lf::CreateContext() {	
 	assert(lf_context == nullptr);
 
 	OpenGL_CreateContext();
@@ -23,6 +23,12 @@ void lf::CreateContext() {
 	lf_context->mvp_ubo = UniformBuffer_Create();
 	UniformBuffer_Allocate(lf_context->mvp_ubo, 3*sizeof(glm::mat4));
 	UniformBuffer_BindRange(lf_context->mvp_ubo, 0, 3*sizeof(glm::mat4));
+}
+
+std::shared_ptr<lf::Lucy>& lf::GetContext() {
+	assert(lf_context != nullptr);
+
+	return lf_context;
 }
 
 void lf::RegisterLayout(Layout layout, const std::vector<VertexArrayLayout> &layouts) {

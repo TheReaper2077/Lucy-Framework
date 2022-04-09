@@ -45,14 +45,27 @@ namespace lf {
 
 	struct MeshIndices;
 
-	struct Mesh;
+	template <typename T>
+	struct MeshT;
+	typedef MeshT<Vec3> Mesh;
 
 	Mesh* CreateMesh(Layout layout, RenderType type, MeshIndices* meshindices = nullptr);
-	MeshIndices* CreateMeshIndices(Layout layout = Layout::None);
-	void TransferMesh(Mesh* mesh);
+
+	template <typename T>
+	MeshT<T>* CreateMesh(RenderType type, MeshIndices* meshindices = nullptr);
+	
+	MeshIndices* CreateMeshIndices();
+		
+	template <typename T>
+	void TransferMesh(T* mesh);
+	
 	void TransferMeshIndices(MeshIndices* meshindices);
-	void RenderMesh(Mesh* mesh, std::string name);
-	void RenderMesh(Mesh* mesh, Shader* shader);
+
+	template <typename T>
+	void RenderMesh(T* mesh, Shader* shader);
+	template <typename T>
+	void RenderMesh(T* mesh, std::string name);
+
 	void ClearMesh(Mesh* mesh);
 	void DestroyMesh(Mesh* mesh);
 
@@ -88,7 +101,10 @@ namespace lf {
 	struct Lucy;
 
 	void CreateContext();
+	std::shared_ptr<lf::Lucy>& GetContext();
 	void RegisterLayout(Layout layout, const std::vector<VertexArrayLayout> &layouts);
+	template <typename T>
+	void RegisterLayout(const std::vector<VertexArrayLayout> &layouts);
 
 	Shader* RegisterShader(std::string name, std::string vs_filename, std::string fs_filename);
 	Shader *GetShader(std::string name);
@@ -104,3 +120,4 @@ namespace lf {
 }
 
 #include "Impl.h"
+#include "Lucy/Mesh.h"

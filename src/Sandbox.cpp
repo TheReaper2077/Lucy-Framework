@@ -6,81 +6,67 @@
 
 #include "Lucy/Lucy.h"
 #include "Lucy/Draw.h"
-#include "Game/Game.h"
 
-// int x = 0, y = 0, w = 100, h = 100;
+int x = 0, y = 0, w = 100, h = 100;
 
-// std::vector<Vec3> vertices = {
-// 	Vec3(x, y, 0), Vec3(0, 0, 0),
-// 	Vec3(x, y + h, 0), Vec3(0, 1, 0),
-// 	Vec3(x + w, y + h, 0), Vec3(1, 1, 0),
-// 	Vec3(x + w, y + h, 0), Vec3(1, 1, 0),
-// 	Vec3(x + w, y, 0), Vec3(1, 0, 0),
-// 	Vec3(x, y, 0), Vec3(0, 0, 0),
-	
-// 	Vec3(x + 100, y, -100), Vec3(0, 0, 1),
-// 	Vec3(x + 100, y + h, -100), Vec3(0, 1, 1),
-// 	Vec3(x + 100 + w, y + h, -100), Vec3(1, 1, 1),
-// 	Vec3(x + 100 + w, y + h, -100), Vec3(1, 1, 1),
-// 	Vec3(x + 100 + w, y, -100), Vec3(1, 0, 1),
-// 	Vec3(x + 100, y, -100), Vec3(0, 0, 1),
-	
-// 	Vec3(x + 200, y + 200, 100), Vec3(0, 0, 0),
-// 	Vec3(x + 200, y + 200 + h, 100), Vec3(0, 1, 0),
-// 	Vec3(x + 200 + w + 200, y + 200 + h, 100), Vec3(3, 1, 0),
-// 	Vec3(x + 200 + w + 200, y + 200 + h, 100), Vec3(3, 1, 0),
-// 	Vec3(x + 200 + w + 200, y + 200, 100), Vec3(3, 0, 0),
-// 	Vec3(x + 200, y + 200, 100), Vec3(0, 0, 0),
-// };
+std::vector<Vec3> vertices = {
+	Vec3(x, y, 1), 	Vec3(0, 0, 1),
+	Vec3(x, y + h, 1), Vec3(0, 1, 1),
+	Vec3(x + w, y + h, 1), Vec3(1, 1, 1),
+	Vec3(x + w, y + h, 1), Vec3(1, 1, 1),
+	Vec3(x + w, y, 1), Vec3(1, 0, 1),
+	Vec3(x, y, 1), Vec3(0, 0, 1),
+};
 
-// Shader* shader, *tex_shader;
-// UniformBuffer *ubo;
-// lf::Mesh *temp;
+static lf::Mesh* mesh;
+static Shader* shader;
 
-// float fov = 0;
+uint32_t tex;
 
-// Vec3 angles = Vec3(30, 150, 0);
-// float scale = 1;
-
-bool ImGuiTile(Texture *tex, const Vec2 &size, const Vec2 &tile_pos, const Vec2 &tile_size) {
-	return ImGui::ImageButton((void*)tex->id, ImVec2(256, 256), ImVec2(tile_pos.x/tex->width, tile_pos.y/tex->height), ImVec2((tile_pos.x + tile_size.x)/tex->width, (tile_pos.y + tile_size.y)/tex->height));
-}
+int a[100*100*4];
 
 void Sandbox::Init() {
-	lf::CreateContext();
+	lf::CreateCamera("cam0", lf::PERSPECTIVE);
+	lf::EnableCamera("cam0");
 
-	// lf::CreateCamera("cam0", lf::ORTHOGRAPHIC);
-	// lf::EnableCamera("cam0");
-	// temp = lf::CreateMesh(lf::Vertex3D, lf::TRIANGLE_INDEXED);
+	shader = lf::RegisterShader("sprite", "D:\\C++\\Lucy Framework\\src\\Shaders\\default.vs", "D:\\C++\\Lucy Framework\\src\\Shaders\\color.fs");
 
-	// auto* tex = Texture_LoadFile("D:\\C++\\Lucy Framework\\res\\container.png");
+	mesh = lf::CreateMesh(lf::Vertex3D, lf::RenderType::TRIANGLES);
 
-	// lf::TextureRect(temp, tex, Vec3(-200, -300), Vec3(100, 100));
-	// lf::TextureRect(temp, tex, Vec3(-200, -200), Vec3(100, 100));
-	// lf::TextureRect(temp, tex, Vec3(-300, -300), Vec3(100, 100));
-	
-	// lf::TransferMesh(temp);
-	// lf::ClearMesh(temp);
+	mesh->vertices = vertices;
 
-	lf::RegisterShader("color", "D:\\C++\\Lucy Framework\\src\\Shaders\\default.vs", "D:\\C++\\Lucy Framework\\src\\Shaders\\color.fs");
-	lf::RegisterShader("texture", "D:\\C++\\Lucy Framework\\src\\Shaders\\default.vs", "D:\\C++\\Lucy Framework\\src\\Shaders\\texture.fs");
-	
-	GameInit();
+	lf::TransferMesh(mesh);
+
+	glGenTextures(1, &tex);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+	// for (int x = 0; x < 100; x++) {
+	// 	for (int y = 0; y < 100; y++) {
+	// 		a[x * 100 * 4 + y * 4 + 0] = 255;
+	// 		a[x * 100 * 4 + y * 4 + 1] = 255;
+	// 		a[x * 100 * 4 + y * 4 + 2] = 255;
+	// 		a[x * 100 * 4 + y * 4 + 3] = 255;
+	// 	}
+	// }
+
+	// // glTexImage3D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+	// glTexImage3D(GL_TEXTURE_3D, 0, GL_RGBA, 100, 100, 100, 0, GL_RGBA, GL_UNSIGNED_BYTE, a);
 }
 
-Vec3 mag(150, 30, 0);
+Vec3 mag(30, 30, 0);
 
-void Sandbox::Update(double dt) {
-	lf::Update();
-	
-	GameUpdate();
-	
-	// lf::ToggleWireframe(lf::IsKeyToggled(GLFW_KEY_E));
+void Sandbox::Update() {
+	lf::ToggleWireframe(lf::IsKeyToggled(GLFW_KEY_E));
 
-	if (ImGui::Begin("Camera")) {
-		ImGui::SliderFloat3("x, y, z", &mag[0], 0, 360, nullptr, 1);
-		lf::CameraView(mag);
-	};
-	ImGui::End();
-	// lf::RenderMesh(temp, "texture");
+	// if (ImGui::Begin("Camera")) {
+	// 	ImGui::SliderFloat3("x, y, z", &mag[0], 0, 360, nullptr, 1);
+	// 	lf::CameraView(mag);
+	// };
+
+	// ImGui::End();
+	lf::RenderMesh(mesh, shader);
 }

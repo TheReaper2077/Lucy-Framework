@@ -23,14 +23,27 @@ namespace lf {
 		Layout layout;
 	};
 
-	struct Mesh {
+	// struct Mesh {
+	// 	RenderType type;
+	// 	Layout layout;
+	// 	MeshIndices* meshindices = nullptr;
+
+	// 	std::vector<Vec3> vertices;
+	// 	std::set<Texture*> textures;
+	// 	VertexBuffer* vertexbuffer = nullptr;
+	// 	uint32_t vertexcount = 0;
+	// };
+
+	template <typename T> struct MeshT {
 		RenderType type;
 		Layout layout;
+		
 		MeshIndices* meshindices = nullptr;
-
-		std::vector<Vec3> vertices;
-		std::set<Texture*> textures;
 		VertexBuffer* vertexbuffer = nullptr;
+		VertexArray* vertexarray = nullptr;
+
+		std::vector<T> vertices;
+		std::set<Texture*> textures;
 		uint32_t vertexcount = 0;
 	};
 
@@ -64,7 +77,7 @@ namespace lf {
 		std::vector<std::shared_ptr<Mesh>> mesh_store;
 		std::vector<std::shared_ptr<MeshIndices>> meshindices_store;
 
-		std::unordered_map<Layout, VertexArray*> layout_vao_map;
+		std::unordered_map<std::size_t, VertexArray*> layout_vao_map;
 		std::unordered_map<std::string, Shader*> shader_map;
 		std::unordered_map<std::string, std::shared_ptr<Camera>> camera_map;
 		std::unordered_map<SpriteId, std::shared_ptr<Tile>> sprite_id_map;

@@ -17,8 +17,10 @@ lf::Camera* lf::CreateCamera(std::string name, ProjectionMode mode) {
 		camera->projection = glm::perspective(glm::radians(45.0f), (float)WIDTH/HEIGHT, 0.001f, 1000.0f);
 		camera->view = glm::mat4(1.0f);
 		camera->model = glm::mat4(1.0f);
-		camera->speed = 0.05;
+		camera->speed = 0.05f;
 	}
+
+	camera->Position = glm::vec3(0, 0, 0);
 
 	lf_context->camera_map[name] = camera;
 

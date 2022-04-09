@@ -5,5 +5,5 @@
 class Sandbox: public Layer {
 public:
 	void Init() override;
-	void Update(double dt) override;
+	void Update() override;
 };

@@ -4,12 +4,16 @@
 #include "define.h"
 #include "Engine.h"
 #include "Sandbox.h"
+#include "Game/Game.h"
 
 int main() {
 	Engine engine;
 
-	engine.AddLayer<Sandbox>();
+	 engine.AddLayer<Sandbox>();
+	//engine.AddLayer<Game>();
 
 	engine.Init();
 	engine.Mainloop();
+
+	return 0;
 }

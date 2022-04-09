@@ -5,7 +5,6 @@
 
 class Engine {
 public:
-	double dt;
 	GLFWwindow *window = nullptr;
 	std::vector<std::shared_ptr<Layer>> layers;
 	bool init = false;

@@ -1,18 +1,9 @@
 #pragma once
 
-#include "../Lucy/Lucy.h"
-#include "../Lucy/Draw.h"
-#include "Components.h"
+#include "../Layer.h"
 
-struct Game {
-	entt::registry registry;
-
-	lf::Mesh *mesh, *map;
-
-	Vec3 color = Vec3(1, 1, 1);
+class Game: public Layer {
+public:
+	void Init() override;
+	void Update() override;
 };
-
-void GameInit();
-void GameUpdate();
-
-void RenderTransform(Transform *transform);
