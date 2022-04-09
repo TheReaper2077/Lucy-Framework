@@ -1,5 +1,18 @@
 #include "OpenGL.h"
 
+#ifndef SHADER_TEXTUREARRAY
+#define SHADER_TEXTUREARRAY "u_texturearray"
+#endif
+
+#ifndef SHADER_TEXTURES
+#define SHADER_TEXTURES "u_textures"
+#endif
+
+#ifndef SHADER_LIGHT
+#define SHADER_LIGHT
+#endif
+
+
 static std::string read_file(const std::string &filename) {
 	std::string line, text;
 	std::fstream file(filename);
@@ -59,23 +72,23 @@ Shader *Shader_Create(const std::string &vs_filename, const std::string &fs_file
 
 	Shader_Bind(shader_ptr);
 
-	if (Shader_GetUniformLoc(shader_ptr, "u_texturearray")) {
+	if (Shader_GetUniformLoc(shader_ptr, SHADER_TEXTUREARRAY)) {
 		shader_ptr->texture_array = true;
 
 		// for (int i = 0; i < 32; i++) {
 		// 	glActiveTexture(GL_TEXTURE0 + i);
-		// 	auto tmp = std::string("u_texturearray") + std::to_string(i);
+		// 	auto tmp = std::string(SHADER_TEXTUREARRAY) + std::to_string(i);
 		// 	Shader_SetUniformi(shader_ptr, tmp, i);
 		// }
 		glActiveTexture(GL_TEXTURE0);
-		Shader_SetUniformi(shader_ptr, "u_texturearray", 0);
+		Shader_SetUniformi(shader_ptr, SHADER_TEXTUREARRAY, 0);
 	}
-	if (Shader_GetUniformLoc(shader_ptr, "u_textures")) {
+	if (Shader_GetUniformLoc(shader_ptr, SHADER_TEXTURES)) {
 		shader_ptr->textures = true;
 		
 		for (int i = 0; i < 32; i++) {
 			glActiveTexture(GL_TEXTURE0 + i);
-			auto tmp = std::string("u_textures") + std::to_string(i);
+			auto tmp = std::string(SHADER_TEXTURES) + std::to_string(i);
 			Shader_SetUniformi(shader_ptr, tmp, i);
 		}
 	}

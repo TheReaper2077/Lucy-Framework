@@ -7,7 +7,7 @@
 #include "Lucy/Lucy.h"
 #include "Lucy/Draw.h"
 
-int x = 1, y = 1, w = 1, h = 1;
+int x = 100, y = 100, w = 100, h = 100;
 
 std::vector<Vec3> vertices = {
 	Vec3(x, y, 0), 	Vec3(0, 0, 1),
@@ -35,6 +35,8 @@ std::vector<Vec3> vertices = {
 lf::Mesh* mesh;
 static Shader* shader;
 
+SpriteAtlas *atlas;
+
 uint32_t tex;
 
 int a[100*100*4];
@@ -43,13 +45,16 @@ void Sandbox::Init() {
 	lf::CreateCamera("cam0", lf::ORTHOGRAPHIC);
 	lf::EnableCamera("cam0");
 
-	shader = lf::RegisterShader("sprite", "D:\\C++\\Lucy Framework\\src\\Shaders\\default.vs", "D:\\C++\\Lucy Framework\\src\\Shaders\\color.fs");
+	shader = lf::RegisterShader("sprite", "D:\\C++\\Lucy Framework\\src\\Shaders\\default.vs", "D:\\C++\\Lucy Framework\\src\\Shaders\\sprite.fs");
 
 	mesh = lf::CreateMesh(lf::Vertex3D, lf::RenderType::TRIANGLES);
 
 	mesh->vertices = vertices;
 
 	lf::TransferMesh(mesh);
+
+	atlas = Texture_SpriteAtlas_LoadFile(80, 80, "D:\\C++\\Lucy Framework\\res\\blocks.png");
+	Texture_BindUnit(atlas->texture, 0);
 }
 
 void Sandbox::Update() {
@@ -68,10 +73,6 @@ void Sandbox::Update() {
 		lf::GetContext()->camera->mouse_enabled = false;
 		toggle = false;
 	}
-
-	static bool show = true;
-
-	ImGui::ShowDemoWindow(&show);
 
 	lf::RenderMesh(mesh, shader);
 }

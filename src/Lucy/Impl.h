@@ -67,6 +67,21 @@ namespace lf {
 		Vec2 uv0, uv1;
 	};
 
+	struct Tileset {
+		int columns;
+		int imageheight;
+		int imagewidth;
+		int margin;
+		int spacing;
+		int tilecount;
+		int tileheight;
+		int tilewidth;
+		std::string image;
+		std::string name;
+		std::string tilesetname;
+		std::string transparentcolor;
+	};
+
 	struct Lucy  {
 		std::vector<std::shared_ptr<Mesh>> mesh_store;
 		std::vector<std::shared_ptr<MeshIndices>> meshindices_store;

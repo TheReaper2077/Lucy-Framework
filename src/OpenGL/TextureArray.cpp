@@ -11,6 +11,13 @@ SpriteAtlas *Texture_SpriteAtlas_LoadFile(int tilew, int tileh, const char* file
 	spriteatlas->texture = Texture_Create();
 	TextureArray_Bind(spriteatlas->texture);
 	
+	int width, height, channels;
+	auto* data = stbi_load(filename, &width, &height, &channels, 0);
+
+	spriteatlas->texture->width = width;
+	spriteatlas->texture->height = height;
+	spriteatlas->texture->channels = channels;
+	
 	int tilex = spriteatlas->texture->width/tilew;
 	int tiley = spriteatlas->texture->height/tileh;
 
@@ -22,9 +29,6 @@ SpriteAtlas *Texture_SpriteAtlas_LoadFile(int tilew, int tileh, const char* file
 	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	SpriteId nextsprite = 0;
-	int width, height, channels;
-	auto* data = stbi_load(filename, &width, &height, &channels, 0);
-
 	unsigned char* tmp = (unsigned char*)alloca(tileh*tilew*channels);
 
 	for (int y = 0; y != tiley; y++) {
