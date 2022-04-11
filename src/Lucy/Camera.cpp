@@ -5,6 +5,8 @@ extern std::shared_ptr<lf::Lucy> lf_context;
 lf::Camera* lf::CreateCamera(std::string name, ProjectionMode mode) {
 	assert(lf_context != nullptr);
 
+	LF_DISABLE_ASSERT(mode != lf::PERSPECTIVE);
+
 	auto camera = std::make_shared<lf::Camera>();
 
 	if (mode == lf::ORTHOGRAPHIC) {
@@ -55,8 +57,8 @@ void lf::EnableCamera(std::string name) {
 void CameraMouseCallback() {
 	if (lf_context->camera == nullptr) return;
 
-	auto xpos = lf::GetMousePosX();
-	auto ypos = lf::GetMousePosY();
+	float xpos = lf::GetMousePosX();
+	float ypos = lf::GetMousePosY();
 
 	auto* camera = lf_context->camera;
 

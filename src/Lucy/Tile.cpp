@@ -2,14 +2,14 @@
 
 extern std::shared_ptr<lf::Lucy> lf_context;
 
-lf::Tile* LoadTile(const char* filename, const Vec2& pos, const Vec2& scale) {
+lf::TexTile* LoadTile(const char* filename, const Vec2& pos, const Vec2& scale) {
 	return lf::LoadTile(Texture_LoadFile(filename), pos, scale);
 }
 
-lf::Tile* lf::LoadTile(Texture *texture, const Vec2& pos, const Vec2& scale) {
+lf::TexTile* lf::LoadTile(Texture *texture, const Vec2& pos, const Vec2& scale) {
 	assert(lf_context != nullptr);
 
-	auto sprite = std::make_shared<lf::Tile>();
+	auto sprite = std::make_shared<lf::TexTile>();
 
 	sprite->texture = texture;
 	sprite->uv0 = pos / Vec2(texture->width, texture->height);
@@ -21,7 +21,7 @@ lf::Tile* lf::LoadTile(Texture *texture, const Vec2& pos, const Vec2& scale) {
 	return sprite.get();
 }
 
-lf::Tile* lf::GetTile(lf::TileId id) {
+lf::TexTile* lf::GetTile(lf::TexTileId id) {
 	assert(lf_context != nullptr);
 	
 	return lf_context->sprite_id_map[id].get();

@@ -1,6 +1,6 @@
 #pragma once
 
-#ifndef LUCY_FRAMEWORK
+#ifndef LF_API
 #include "Lucy.h"
 #endif
 
@@ -14,7 +14,19 @@ void lf::RegisterLayout(const std::vector<VertexArrayLayout>& layouts) {
 };
 
 template <typename T>
-lf::MeshT<T>* CreateMesh(lf::RenderType type, lf::MeshIndices* meshindices = nullptr) {
+void lf::ClearMesh(T* mesh) {
+	mesh->vertexcount = 0;
+	mesh->textures.clear();
+	mesh->vertices.clear();
+
+	if (mesh->meshindices != nullptr) {
+		mesh->meshindices->indices.clear();
+		mesh->meshindices->indexcount = 0;
+	}
+}
+
+template <typename T>
+lf::MeshT<T>* CreateMesh(lf::MeshType type, lf::MeshIndices* meshindices = nullptr) {
 
 	auto mesh = std::make_shared<lf::MeshT<T>>();
 	mesh->type = type;
@@ -22,7 +34,7 @@ lf::MeshT<T>* CreateMesh(lf::RenderType type, lf::MeshIndices* meshindices = nul
 	mesh->vertexbuffer = VertexBuffer_Create();
 	mesh->vertexarray = lf::GetContext()->layout_vao_map[typeid(T).hash_code];
 	
-	if (type == lf::RenderType::TRIANGLE_INDEXED) {
+	if (type == lf::MeshType::TRIANGLE_INDEXED) {
 		if (meshindices != nullptr) {
 			mesh->meshindices = meshindices;
 
@@ -60,7 +72,7 @@ void lf::TransferMesh(T* mesh) {
 
 	if (mesh->meshindices == nullptr) return;
 	if (mesh->meshindices->shared) return;
-	if (mesh->type != lf::RenderType::TRIANGLE_INDEXED) return;
+	if (mesh->type != lf::MeshType::TRIANGLE_INDEXED) return;
 
 	TransferMeshIndices(mesh->meshindices);
 };
@@ -75,9 +87,8 @@ void lf::RenderMesh(T* mesh, Shader* shader) {
 	assert(mesh != nullptr);
 	assert(shader != nullptr);
 
-	int i = 0;
 	for (auto& tex: mesh->textures) {
-		Texture_BindUnit(tex, i++);
+		Texture_BindUnit(tex.first, tex.second);
 	}
 
 	Shader_Bind(shader);
@@ -85,22 +96,22 @@ void lf::RenderMesh(T* mesh, Shader* shader) {
 	VertexArray_BindVertexBuffer(mesh->vertexarray, mesh->vertexbuffer, mesh->vertexarray->stride);
 
 	switch (mesh->type) {
-		case lf::RenderType::POINTS:
+		case lf::MeshType::POINTS:
 			glDrawArrays(GL_POINTS, 0, mesh->vertexcount);
 			break;
-		case lf::RenderType::LINES:
+		case lf::MeshType::LINES:
 			glDrawArrays(GL_LINES, 0, mesh->vertexcount);
 			break;
-		case lf::RenderType::LINE_STRIP:
+		case lf::MeshType::LINE_STRIP:
 			glDrawArrays(GL_LINE_STRIP, 0, mesh->vertexcount);
 			break;
-		case lf::RenderType::TRIANGLES:
+		case lf::MeshType::TRIANGLES:
 			glDrawArrays(GL_TRIANGLES, 0, mesh->vertexcount);
 			break;
-		case lf::RenderType::TRIANGLE_STRIP:
+		case lf::MeshType::TRIANGLE_STRIP:
 			glDrawArrays(GL_TRIANGLE_STRIP, 0, mesh->vertexcount);
 			break;
-		case lf::RenderType::TRIANGLE_INDEXED:
+		case lf::MeshType::TRIANGLE_INDEXED:
 			VertexArray_BindIndexBuffer(mesh->vertexarray, mesh->meshindices->indexbuffer);
 			glDrawElements(GL_TRIANGLES, mesh->meshindices->indexcount, GL_UNSIGNED_INT, nullptr);
 			break;

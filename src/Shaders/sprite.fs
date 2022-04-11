@@ -2,8 +2,8 @@
 
 in vec3 f_attr;
 
-uniform sampler2DArray u_texturearray;
+uniform sampler2D u_textures0;
 
 void main() {
-	gl_FragColor = texture(u_texturearray, f_attr) * vec4(1);
+	gl_FragColor = texture(u_textures0, f_attr.xy) * vec4(1);
 }

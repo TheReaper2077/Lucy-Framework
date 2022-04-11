@@ -33,6 +33,9 @@ target_link_libraries(main PRIVATE imgui::imgui)
 find_package(EnTT CONFIG REQUIRED)
 target_link_libraries(main PRIVATE EnTT::EnTT)
 
+find_package(nlohmann_json CONFIG REQUIRED)
+target_link_libraries(main PRIVATE nlohmann_json nlohmann_json::nlohmann_json)
+
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 include(CPack)

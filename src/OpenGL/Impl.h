@@ -1,6 +1,6 @@
 #pragma once
 
-#ifndef OPENGL_API
+#ifndef GL_API
 #include "OpenGL.h"
 #endif
 

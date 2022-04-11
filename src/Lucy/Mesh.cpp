@@ -2,7 +2,7 @@
 
 extern std::shared_ptr<lf::Lucy> lf_context;
 
-lf::Mesh* lf::CreateMesh(lf::Layout layout, lf::RenderType type, lf::MeshIndices* meshindices) {
+lf::Mesh* lf::CreateMesh(lf::Layout layout, lf::MeshType type, lf::MeshIndices* meshindices) {
 	assert(lf_context != nullptr);
 
 	auto mesh = std::make_shared<lf::Mesh>();
@@ -12,7 +12,7 @@ lf::Mesh* lf::CreateMesh(lf::Layout layout, lf::RenderType type, lf::MeshIndices
 	mesh->vertexbuffer = VertexBuffer_Create();
 	mesh->vertexarray = lf_context->layout_vao_map[layout];
 
-	if (type == lf::RenderType::TRIANGLE_INDEXED) {
+	if (type == lf::MeshType::TRIANGLE_INDEXED) {
 		if (meshindices != nullptr) {
 			mesh->meshindices = meshindices;
 
@@ -53,13 +53,4 @@ void lf::TransferMeshIndices(lf::MeshIndices* meshindices) {
 	meshindices->indexcount = meshindices->indices.size();
 }
 
-void lf::ClearMesh(lf::Mesh* mesh) {
-	mesh->vertexcount = 0;
-	mesh->textures.clear();
-	mesh->vertices.clear();
 
-	if (mesh->meshindices != nullptr) {
-		mesh->meshindices->indices.clear();
-		mesh->meshindices->indexcount = 0;
-	}
-}

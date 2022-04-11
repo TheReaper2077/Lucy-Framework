@@ -5,31 +5,16 @@
 #include "Math/Vec4.inl"
 
 #include "Lucy/Lucy.h"
-#include "Lucy/Draw.h"
 
-int x = 100, y = 100, w = 100, h = 100;
+int x = 0, y = 0, w = 200, h = 200;
 
 std::vector<Vec3> vertices = {
-	Vec3(x, y, 0), 	Vec3(0, 0, 1),
-	Vec3(x, y + h, 0), Vec3(0, 1, 1),
-	Vec3(x + w, y + h, 0), Vec3(1, 1, 1),
-	Vec3(x + w, y + h, 0), Vec3(1, 1, 1),
-	Vec3(x + w, y, 0), Vec3(1, 0, 1),
-	Vec3(x, y, 0), Vec3(0, 0, 1),
-	
-	// Vec3(x + 1, y, 1), 	Vec3(0, 0, 1),
-	// Vec3(x + 1, y + h, 1), Vec3(0, 1, 1),
-	// Vec3(x + 1 + w, y + h, 1), Vec3(1, 1, 1),
-	// Vec3(x + 1 + w, y + h, 1), Vec3(1, 1, 1),
-	// Vec3(x + 1 + w, y, 1), Vec3(1, 0, 1),
-	// Vec3(x + 1, y, 1), Vec3(0, 0, 1),
-
-	// Vec3(x + 1, y, -1), Vec3(0, 0, 1),
-	// Vec3(x + 1, y + h, -1), Vec3(0, 1, 1),
-	// Vec3(x + 1 + w, y + h, -1), Vec3(1, 1, 1),
-	// Vec3(x + 1 + w, y + h, -1), Vec3(1, 1, 1),
-	// Vec3(x + 1 + w, y, -1), Vec3(1, 0, 1),
-	// Vec3(x + 1, y, -1), Vec3(0, 0, 1),
+	Vec3(x, y, 0), 	Vec3(0, 0, 0),
+	Vec3(x, y + h, 0), Vec3(0, 1, 0),
+	Vec3(x + w, y + h, 0), Vec3(1, 1, 0),
+	Vec3(x + w, y + h, 0), Vec3(1, 1, 0),
+	Vec3(x + w, y, 0), Vec3(1, 0, 0),
+	Vec3(x, y, 0), Vec3(0, 0, 0),
 };
 
 lf::Mesh* mesh;
@@ -37,24 +22,19 @@ static Shader* shader;
 
 SpriteAtlas *atlas;
 
-uint32_t tex;
-
-int a[100*100*4];
-
 void Sandbox::Init() {
 	lf::CreateCamera("cam0", lf::ORTHOGRAPHIC);
 	lf::EnableCamera("cam0");
 
-	shader = lf::RegisterShader("sprite", "D:\\C++\\Lucy Framework\\src\\Shaders\\default.vs", "D:\\C++\\Lucy Framework\\src\\Shaders\\sprite.fs");
+	shader = lf::RegisterShader("sprite", "D:\\C++\\Lucy Framework\\src\\Shaders\\default.vs", "D:\\C++\\Lucy Framework\\src\\Shaders\\texture.fs");
 
-	mesh = lf::CreateMesh(lf::Vertex3D, lf::RenderType::TRIANGLES);
+	mesh = lf::CreateMesh(lf::Vertex3D, lf::MeshType::TRIANGLES);
 
-	mesh->vertices = vertices;
+	auto* tex = Texture_LoadFile("D:\\C++\\Lucy Framework\\res\\container.png");
+
+	lf::RenderRect(mesh, tex, Vec3(0, 0, 0), Vec3(100, 100), Vec2(0, 0), Vec2(1, 1), true);
 
 	lf::TransferMesh(mesh);
-
-	atlas = Texture_SpriteAtlas_LoadFile(80, 80, "D:\\C++\\Lucy Framework\\res\\blocks.png");
-	Texture_BindUnit(atlas->texture, 0);
 }
 
 void Sandbox::Update() {

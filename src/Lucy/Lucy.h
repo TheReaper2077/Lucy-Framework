@@ -3,10 +3,12 @@
 #include "../OpenGL/OpenGL.h"
 #include "../Math/math.h"
 
-// #define LF_DEBUG
-
-#define LUCY_FRAMEWORK
 #define LF_API
+
+#define LF_ABSOLUTE_TEXTURES_LIMIT 8
+
+#define LF_ASSERT(x) assert(x)
+#define LF_DISABLE_ASSERT(x) assert(x)
 
 #ifndef LF_UPS
 #define LF_UPS 60
@@ -18,22 +20,22 @@ namespace lf {
 	struct Events;
 
 	LF_API void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
-	bool IsKeyPressed(int key);
-	bool IsKeyReleased(int key);
-	bool IsKeyTyping(int key);
-	bool IsKeyToggled(int key);
+	LF_API bool IsKeyPressed(int key);
+	LF_API bool IsKeyReleased(int key);
+	LF_API bool IsKeyTyping(int key);
+	LF_API bool IsKeyToggled(int key);
 
 	LF_API void MouseCursorPosCallback(GLFWwindow* window, double xpos, double ypos);
 	LF_API void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
-	bool IsMousePressed(int button);
-	bool IsMouseReleased(int button);
-	bool IsMouseToggled(int button);
-	double GetMousePosX();
-	double GetMousePosY();
+	LF_API bool IsMousePressed(int button);
+	LF_API bool IsMouseReleased(int button);
+	LF_API bool IsMouseToggled(int button);
+	LF_API double GetMousePosX();
+	LF_API double GetMousePosY();
 
 	// -----------------------------------------------------------------------------Mesh
 
-	enum RenderType {
+	enum MeshType {
 		POINTS,
 		LINES,
 		LINE_STRIP,
@@ -53,9 +55,9 @@ namespace lf {
 	template <typename T> struct MeshT;
 	typedef MeshT<Vec3> Mesh;
 
-	Mesh* CreateMesh(Layout layout, RenderType type, MeshIndices* meshindices = nullptr);
-	template <typename T> MeshT<T>* CreateMesh(RenderType type, MeshIndices* meshindices = nullptr);
-	MeshIndices* CreateMeshIndices();	
+	LF_API Mesh* CreateMesh(Layout layout, MeshType type, MeshIndices* meshindices = nullptr);
+	LF_API template <typename T> MeshT<T>* CreateMesh(MeshType type, MeshIndices* meshindices = nullptr);
+	LF_API MeshIndices* CreateMeshIndices();	
 		
 	LF_API template <typename T> void TransferMesh(T* mesh);	
 	LF_API void TransferMeshIndices(MeshIndices* meshindices);
@@ -63,7 +65,7 @@ namespace lf {
 	LF_API template <typename T> void RenderMesh(T* mesh, Shader* shader);
 	LF_API template <typename T> void RenderMesh(T* mesh, std::string name);
 
-	LF_API void ClearMesh(Mesh* mesh);
+	LF_API template <typename T> void ClearMesh(T* mesh);
 	LF_API void DestroyMesh(Mesh* mesh);
 
 	// -----------------------------------------------------------------------------Camera
@@ -75,8 +77,8 @@ namespace lf {
 
 	struct Camera;
 
-	Camera* CreateCamera(std::string name, ProjectionMode mode);
-	Camera* GetCamera(std::string name);
+	LF_API Camera* CreateCamera(std::string name, ProjectionMode mode);
+	LF_API Camera* GetCamera(std::string name);
 	LF_API void EnableCamera(std::string name);
 	LF_API void CameraView(const Vec3 &mag);
 	LF_API void CameraView(float zoom);
@@ -84,52 +86,45 @@ namespace lf {
 
 	// -----------------------------------------------------------------------------Sprites
 
-	typedef uint32_t TileId;
+	typedef uint32_t TexTileId;
 
-	struct Tile;
+	struct TexTile;
 
-	Tile* LoadTile(const char* filename, const Vec2& pos, const Vec2& scale);
-	Tile* LoadTile(Texture *texture, const Vec2& pos, const Vec2& scale);
-	Tile* GetTile(TileId id);
+	LF_API TexTile* LoadTile(const char* filename, const Vec2& pos, const Vec2& scale);
+	LF_API TexTile* LoadTile(Texture *texture, const Vec2& pos, const Vec2& scale);
+	LF_API TexTile* GetTile(TexTileId id);
 
 	// -----------------------------------------------------------------------------Tileset
 
 	struct Tileset;
 
-	Tileset *LoadTileset(std::string name, std::string filename);
+	LF_API Tileset *LoadTileset(std::string name, std::string filename);
 
 	// -----------------------------------------------------------------------------Lucy Framework
 	
 	struct Lucy;
 
 	LF_API void CreateContext();
-	std::shared_ptr<lf::Lucy>& GetContext();
+	LF_API std::shared_ptr<lf::Lucy>& GetContext();
 	LF_API void RegisterLayout(Layout layout, const std::vector<VertexArrayLayout> &layouts);
 	LF_API template <typename T> void RegisterLayout(const std::vector<VertexArrayLayout> &layouts);
 
-	Shader* RegisterShader(std::string name, std::string vs_filename, std::string fs_filename, bool file = true, bool bind_block = true);
-	Shader *GetShader(std::string name);
+	LF_API Shader* RegisterShader(std::string name, std::string vs_filename, std::string fs_filename, bool file = true, bool bind_block = true);
+	LF_API Shader *GetShader(std::string name);
 
 	LF_API void SetModel(const glm::mat4& model);
 	LF_API void SetView(const glm::mat4& view);
 	LF_API void SetProjection(const glm::mat4& projection);
 
 	LF_API void Update();
-	double& GetTimeStep();
+	LF_API double& GetTimeStep();
 
 	LF_API void ToggleWireframe(bool wireframe);
 
-	// LF_API void DebugInit()
-	// #ifndef LF_DEBUG
-	// {}
-	// #endif
-	// ;
-	// LF_API void DebugUpdate()
-	// #ifndef LF_DEBUG
-	// {}
-	// #endif
-	// ;
+	LF_API void DebugInit();
+	LF_API void DebugUpdate();
 }
 
 #include "Impl.h"
-#include "Lucy/Mesh.h"
+#include "Mesh.h"
+#include "Functions.h"

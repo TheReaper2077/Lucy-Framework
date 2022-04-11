@@ -24,7 +24,7 @@ void lf::CreateContext() {
 	UniformBuffer_Allocate(lf_context->mvp_ubo, 3 * sizeof(glm::mat4));
 	UniformBuffer_BindRange(lf_context->mvp_ubo, 0, 3 * sizeof(glm::mat4));
 
-	// lf::DebugInit();
+	lf::DebugInit();
 }
 
 std::shared_ptr<lf::Lucy>& lf::GetContext() {
@@ -99,7 +99,7 @@ void lf::Update() {
 		SetModel(camera->model);
 	}
 
-	// lf::DebugUpdate();
+	lf::DebugUpdate();
 }
 
 double& lf::GetTimeStep() {

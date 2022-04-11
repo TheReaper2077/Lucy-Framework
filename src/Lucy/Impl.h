@@ -1,6 +1,6 @@
 #pragma once
 
-#ifndef LUCY_FRAMEWORK
+#ifndef LF_API
 #include "Lucy.h"
 #endif
 
@@ -24,7 +24,7 @@ namespace lf {
 	};
 
 	template <typename T> struct MeshT {
-		RenderType type;
+		MeshType type;
 		Layout layout;
 		
 		MeshIndices* meshindices = nullptr;
@@ -32,7 +32,8 @@ namespace lf {
 		VertexArray* vertexarray = nullptr;
 
 		std::vector<T> vertices;
-		std::set<Texture*> textures;
+		std::unordered_map<Texture*, uint32_t> textures;
+		uint32_t next_texture_unit = 0;
 		uint32_t vertexcount = 0;
 	};
 
@@ -61,8 +62,8 @@ namespace lf {
 		std::string name;
 	};
 
-	struct Tile {
-		TileId id;
+	struct TexTile {
+		TexTileId id;
 		Texture *texture;
 		Vec2 uv0, uv1;
 	};
@@ -89,7 +90,7 @@ namespace lf {
 		std::unordered_map<std::size_t, VertexArray*> layout_vao_map;
 		std::unordered_map<std::string, Shader*> shader_map;
 		std::unordered_map<std::string, std::shared_ptr<Camera>> camera_map;
-		std::unordered_map<SpriteId, std::shared_ptr<Tile>> sprite_id_map;
+		std::unordered_map<SpriteId, std::shared_ptr<TexTile>> sprite_id_map;
 
 		std::shared_ptr<Events> event;
 
