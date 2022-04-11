@@ -27,28 +27,28 @@ void Sandbox::Init() {
 	lf::EnableCamera("cam0");
 
 	shader = lf::RegisterShader("sprite", "D:\\C++\\Lucy Framework\\src\\Shaders\\default.vs", "D:\\C++\\Lucy Framework\\src\\Shaders\\texture.fs");
-
 	mesh = lf::CreateMesh(lf::Vertex3D, lf::MeshType::TRIANGLES);
 
-	auto* tex = Texture_LoadFile("D:\\C++\\Lucy Framework\\res\\container.png");
+	auto* tex = Texture_LoadFile("D:\\C++\\Lucy Framework\\res\\blocks.png");
+	auto* tile = lf::LoadTile(tex, Vec2(80, 80), Vec2(80, 80));
 
-	lf::RenderRect(mesh, tex, Vec3(0, 0, 0), Vec3(100, 100), Vec2(0, 0), Vec2(1, 1), true);
+	lf::RenderRect(mesh, tile, Vec3(0, 0), Vec3(100, 100));
 
 	lf::TransferMesh(mesh);
 }
 
 void Sandbox::Update() {
-	lf::ToggleWireframe(lf::IsKeyToggled(GLFW_KEY_E));
+	lf::ToggleWireframe(lf::IsKeyToggled(LF_KEY_E));
 
 	static bool toggle;
 
-	if (lf::IsMouseToggled(GLFW_MOUSE_BUTTON_3) && !toggle) {
+	if (lf::IsMouseToggled(LF_MOUSE_BUTTON_3) && !toggle) {
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 		lf::GetContext()->camera->mouse_enabled = true;
 		toggle = true;
 	}
 
-	if (!lf::IsMouseToggled(GLFW_MOUSE_BUTTON_3) && toggle) {
+	if (!lf::IsMouseToggled(LF_MOUSE_BUTTON_3) && toggle) {
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 		lf::GetContext()->camera->mouse_enabled = false;
 		toggle = false;

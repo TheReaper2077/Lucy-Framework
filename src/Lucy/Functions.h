@@ -5,6 +5,7 @@
 #endif
 
 namespace lf {
+	void RenderRect(Mesh* mesh, TexTile *tex, const Vec3& pos, const Vec3& scale, bool enable_indexing = true);
 	void RenderRect(Mesh* mesh, Texture *tex, const Vec3& pos, const Vec3& scale, const Vec2& uv0, const Vec2& uv1, bool enable_indexing = true);
 	void RenderRect(Mesh* mesh, const Vec3& pos, const Vec3& scale, const Vec3& color, bool fill = false, bool enable_indexing = true);
 

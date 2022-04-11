@@ -3,7 +3,7 @@
 extern std::shared_ptr<lf::Lucy> lf_context;
 
 lf::Mesh* lf::CreateMesh(lf::Layout layout, lf::MeshType type, lf::MeshIndices* meshindices) {
-	assert(lf_context != nullptr);
+	LF_ASSERT(lf_context != nullptr);
 
 	auto mesh = std::make_shared<lf::Mesh>();
 	mesh->layout = layout;
@@ -35,7 +35,7 @@ lf::Mesh* lf::CreateMesh(lf::Layout layout, lf::MeshType type, lf::MeshIndices* 
 }
 
 lf::MeshIndices* lf::CreateMeshIndices() {
-	assert(lf_context != nullptr);
+	LF_ASSERT(lf_context != nullptr);
 
 	auto meshindices = std::make_shared<lf::MeshIndices>();
 
@@ -47,7 +47,7 @@ lf::MeshIndices* lf::CreateMeshIndices() {
 }
 
 void lf::TransferMeshIndices(lf::MeshIndices* meshindices) {
-	assert(meshindices->indexbuffer != nullptr);
+	LF_ASSERT(meshindices->indexbuffer != nullptr);
 
 	IndexBuffer_AddData(meshindices->indexbuffer, meshindices->indices.data(), meshindices->indices.size()*sizeof(uint32_t));
 	meshindices->indexcount = meshindices->indices.size();

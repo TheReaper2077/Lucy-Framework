@@ -9,5 +9,5 @@ void OpenGL_CreateContext() {
 }
 
 void OpenGL_DestroyContext() {
-	
+	assert(gl_context != nullptr);
 }

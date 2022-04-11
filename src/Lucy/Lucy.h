@@ -14,6 +14,8 @@
 #define LF_UPS 60
 #endif
 
+#include "GLFW_Compat.h"
+
 namespace lf {
 	// -----------------------------------------------------------------------------Events
 
@@ -90,8 +92,8 @@ namespace lf {
 
 	struct TexTile;
 
-	LF_API TexTile* LoadTile(const char* filename, const Vec2& pos, const Vec2& scale);
-	LF_API TexTile* LoadTile(Texture *texture, const Vec2& pos, const Vec2& scale);
+	LF_API TexTile* LoadTile(const char* filename, const Vec2& pos, const Vec2& scale, bool normalized = false);
+	LF_API TexTile* LoadTile(Texture *texture, const Vec2& pos, const Vec2& scale, bool normalized = false);
 	LF_API TexTile* GetTile(TexTileId id);
 
 	// -----------------------------------------------------------------------------Tileset

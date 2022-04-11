@@ -21,30 +21,25 @@ const std::string color_fs =
 "}";
 
 void lf::DebugInit() {
-	assert(lf_context != nullptr);
+	LF_ASSERT(lf_context != nullptr);
 
-	lf::RegisterShader("3d_ui", color_vs, color_fs, false, false);
+	// lf::RegisterShader("3d_ui", color_vs, color_fs, false, false);
 }
 
 void lf::DebugUpdate() {
-	assert(lf_context != nullptr);
+	if (!lf::IsKeyToggled(LF_KEY_F5)) return;
+
+	LF_ASSERT(lf_context != nullptr);
 
 	auto* camera = lf_context->camera;
 
 	if (camera != nullptr) {
-		if (camera->mode == lf::ProjectionMode::PERSPECTIVE) {
-			Shader_SetUniformMat4(lf::GetShader("3d_ui"), "u_mvp", &(camera->projection * camera->view)[0][0]);
-		}
-
 		static Vec3 mag;
 
 		if (ImGui::Begin("Scene")) {
 			if (ImGui::CollapsingHeader("Camera")) {
 				ImGui::InputFloat("Speed", &camera->speed);
 				ImGui::InputFloat3("Position", &camera->Position[0]);
-				if (camera->mode == lf::ProjectionMode::PERSPECTIVE) {
-					ImGui::InputFloat3("Direction", &camera->Front[0]);
-				}
 				ImGui::SliderFloat3("Scene Rotation", &mag[0], 0, 360, nullptr, 1);
 
 				lf::CameraView(mag);
@@ -52,37 +47,43 @@ void lf::DebugUpdate() {
 		}
 		ImGui::End();
 
-		if (camera->mode == lf::ProjectionMode::PERSPECTIVE) {
-			static lf::Mesh* ui_mesh;
-
-			if (ui_mesh == nullptr) {
-				ui_mesh = lf::CreateMesh(lf::Vertex3D, lf::MeshType::LINES);
-			}
-
-			glm::vec3 tmp = camera->Position + camera->Front * 10.0f;
-
-			ui_mesh->vertices.reserve(ui_mesh->vertices.size() + 4 * 3);
-
-			ui_mesh->vertices.emplace_back(Vec3(tmp.x, tmp.y, tmp.z));
-			ui_mesh->vertices.emplace_back(Vec3(1, 0, 0));
-			ui_mesh->vertices.emplace_back(Vec3(tmp.x + 1, tmp.y, tmp.z));
-			ui_mesh->vertices.emplace_back(Vec3(1, 0, 0));
-
-			ui_mesh->vertices.emplace_back(Vec3(tmp.x, tmp.y, tmp.z));
-			ui_mesh->vertices.emplace_back(Vec3(0, 0, 1));
-			ui_mesh->vertices.emplace_back(Vec3(tmp.x, tmp.y + 1, tmp.z));
-			ui_mesh->vertices.emplace_back(Vec3(0, 0, 1));
-
-			ui_mesh->vertices.emplace_back(Vec3(tmp.x, tmp.y, tmp.z));
-			ui_mesh->vertices.emplace_back(Vec3(0, 1, 0));
-			ui_mesh->vertices.emplace_back(Vec3(tmp.x, tmp.y, tmp.z + 1));
-			ui_mesh->vertices.emplace_back(Vec3(0, 1, 0));
-
-			glClear(GL_DEPTH_BUFFER_BIT);
-
-			lf::TransferMesh(ui_mesh);
-			lf::RenderMesh(ui_mesh, "3d_ui");
-			lf::ClearMesh(ui_mesh);
+		if (ImGui::Begin("Debug")) {
+			
 		}
 	}
 }
+
+
+
+		// if (camera->mode == lf::ProjectionMode::PERSPECTIVE) {
+		// 	static lf::Mesh* ui_mesh;
+
+		// 	if (ui_mesh == nullptr) {
+		// 		ui_mesh = lf::CreateMesh(lf::Vertex3D, lf::MeshType::LINES);
+		// 	}
+
+		// 	glm::vec3 tmp = camera->Position + camera->Front * 10.0f;
+
+		// 	ui_mesh->vertices.reserve(ui_mesh->vertices.size() + 4 * 3);
+
+		// 	ui_mesh->vertices.emplace_back(Vec3(tmp.x, tmp.y, tmp.z));
+		// 	ui_mesh->vertices.emplace_back(Vec3(1, 0, 0));
+		// 	ui_mesh->vertices.emplace_back(Vec3(tmp.x + 1, tmp.y, tmp.z));
+		// 	ui_mesh->vertices.emplace_back(Vec3(1, 0, 0));
+
+		// 	ui_mesh->vertices.emplace_back(Vec3(tmp.x, tmp.y, tmp.z));
+		// 	ui_mesh->vertices.emplace_back(Vec3(0, 0, 1));
+		// 	ui_mesh->vertices.emplace_back(Vec3(tmp.x, tmp.y + 1, tmp.z));
+		// 	ui_mesh->vertices.emplace_back(Vec3(0, 0, 1));
+
+		// 	ui_mesh->vertices.emplace_back(Vec3(tmp.x, tmp.y, tmp.z));
+		// 	ui_mesh->vertices.emplace_back(Vec3(0, 1, 0));
+		// 	ui_mesh->vertices.emplace_back(Vec3(tmp.x, tmp.y, tmp.z + 1));
+		// 	ui_mesh->vertices.emplace_back(Vec3(0, 1, 0));
+
+		// 	glClear(GL_DEPTH_BUFFER_BIT);
+
+		// 	lf::TransferMesh(ui_mesh);
+		// 	lf::RenderMesh(ui_mesh, "3d_ui");
+		// 	lf::ClearMesh(ui_mesh);
+		// }

@@ -3,7 +3,7 @@
 extern std::shared_ptr<lf::Lucy> lf_context;
 
 lf::Camera* lf::CreateCamera(std::string name, ProjectionMode mode) {
-	assert(lf_context != nullptr);
+	LF_ASSERT(lf_context != nullptr);
 
 	LF_DISABLE_ASSERT(mode != lf::PERSPECTIVE);
 
@@ -31,7 +31,7 @@ lf::Camera* lf::CreateCamera(std::string name, ProjectionMode mode) {
 }
 
 void lf::CameraView(const Vec3 &mag) {
-	assert(lf_context->camera != nullptr);
+	LF_ASSERT(lf_context->camera != nullptr);
 
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::rotate(model, glm::radians(mag.x), glm::vec3(1, 0, 0));
@@ -42,13 +42,13 @@ void lf::CameraView(const Vec3 &mag) {
 }
 
 lf::Camera* lf::GetCamera(std::string name) {
-	assert(lf_context != nullptr);
+	LF_ASSERT(lf_context != nullptr);
 
 	return lf_context->camera_map[name].get();
 }
 
 void lf::EnableCamera(std::string name) {
-	assert(lf_context != nullptr);
+	LF_ASSERT(lf_context != nullptr);
 
 	lf_context->camera = lf_context->camera_map[name].get();
 }
@@ -102,7 +102,7 @@ void CameraMouseCallback() {
 }
 
 void lf::CameraUpdate() {
-	assert(lf_context->camera != nullptr);
+	LF_ASSERT(lf_context->camera != nullptr);
 	
 	auto* camera = lf_context->camera;
 	

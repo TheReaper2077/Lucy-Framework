@@ -3,7 +3,7 @@
 std::shared_ptr<lf::Lucy> lf_context;
 
 void lf::CreateContext() {
-	assert(lf_context == nullptr);
+	LF_ASSERT(lf_context == nullptr);
 
 	OpenGL_CreateContext();
 
@@ -28,20 +28,20 @@ void lf::CreateContext() {
 }
 
 std::shared_ptr<lf::Lucy>& lf::GetContext() {
-	assert(lf_context != nullptr);
+	LF_ASSERT(lf_context != nullptr);
 
 	return lf_context;
 }
 
 void lf::RegisterLayout(Layout layout, const std::vector<VertexArrayLayout>& layouts) {
-	assert(lf_context != nullptr);
+	LF_ASSERT(lf_context != nullptr);
 
 	lf_context->layout_vao_map[layout] = VertexArray_Create(layouts);
 }
 
 Shader* lf::RegisterShader(std::string name, std::string vs_filename, std::string fs_filename, bool file, bool bind_block) {
-	assert(lf_context != nullptr);
-	assert(lf_context->shader_map.find(name) == lf_context->shader_map.end());
+	LF_ASSERT(lf_context != nullptr);
+	LF_ASSERT(lf_context->shader_map.find(name) == lf_context->shader_map.end());
 
 	auto* shader = Shader_Create(vs_filename, fs_filename, file);
 	if (bind_block) Shader_BindUniformBlock(shader, "ProjectionMatrix", 0);
@@ -51,14 +51,14 @@ Shader* lf::RegisterShader(std::string name, std::string vs_filename, std::strin
 }
 
 Shader* lf::GetShader(std::string name) {
-	assert(lf_context != nullptr);
-	assert(lf_context->shader_map.find(name) != lf_context->shader_map.end());
+	LF_ASSERT(lf_context != nullptr);
+	LF_ASSERT(lf_context->shader_map.find(name) != lf_context->shader_map.end());
 
 	return lf_context->shader_map[name];
 }
 
 void lf::SetModel(const glm::mat4& model) {
-	assert(lf_context != nullptr);
+	LF_ASSERT(lf_context != nullptr);
 
 	if (lf_context->model == model) return;
 	lf_context->model = model;
@@ -67,7 +67,7 @@ void lf::SetModel(const glm::mat4& model) {
 }
 
 void lf::SetView(const glm::mat4& view) {
-	assert(lf_context != nullptr);
+	LF_ASSERT(lf_context != nullptr);
 
 	if (lf_context->view == view) return;
 	lf_context->view = view;
@@ -75,7 +75,7 @@ void lf::SetView(const glm::mat4& view) {
 }
 
 void lf::SetProjection(const glm::mat4& projection) {
-	assert(lf_context != nullptr);
+	LF_ASSERT(lf_context != nullptr);
 
 	if (lf_context->projection == projection) return;
 	lf_context->projection = projection;
@@ -83,7 +83,7 @@ void lf::SetProjection(const glm::mat4& projection) {
 }
 
 void lf::Update() {
-	assert(lf_context != nullptr);
+	LF_ASSERT(lf_context != nullptr);
 
 	lf_context->end_time = std::chrono::high_resolution_clock::now();
 	lf_context->dt = std::chrono::duration<double, std::ratio<1, LF_UPS>>(lf_context->end_time - lf_context->start_time).count();
@@ -107,7 +107,7 @@ double& lf::GetTimeStep() {
 }
 
 void lf::ToggleWireframe(bool wireframe) {
-	assert(lf_context != nullptr);
+	LF_ASSERT(lf_context != nullptr);
 
 	if (wireframe && !lf_context->wireframe) {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
