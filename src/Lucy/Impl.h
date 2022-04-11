@@ -81,6 +81,10 @@ namespace lf {
 		std::string name;
 		std::string tilesetname;
 		std::string transparentcolor;
+
+		std::unordered_map<SpriteId, TexTile*> sprite_map;
+		
+		TextureArray *spriteatlas = nullptr;
 	};
 
 	struct Lucy  {
@@ -90,7 +94,8 @@ namespace lf {
 		std::unordered_map<std::size_t, VertexArray*> layout_vao_map;
 		std::unordered_map<std::string, Shader*> shader_map;
 		std::unordered_map<std::string, std::shared_ptr<Camera>> camera_map;
-		std::unordered_map<SpriteId, std::shared_ptr<TexTile>> sprite_id_map;
+		std::unordered_map<TexTileId, std::shared_ptr<TexTile>> sprite_id_map;
+		std::unordered_map<std::string, std::shared_ptr<Tileset>> tileset_map;
 
 		std::shared_ptr<Events> event;
 
@@ -107,6 +112,6 @@ namespace lf {
 
 		bool wireframe = false;
 
-		SpriteId next_spriteid = 0;
+		TexTileId next_spriteid = 0;
 	};
 }

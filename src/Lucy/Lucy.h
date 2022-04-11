@@ -102,6 +102,13 @@ namespace lf {
 
 	LF_API Tileset *LoadTileset(std::string name, std::string filename);
 
+	// -----------------------------------------------------------------------------World
+
+	struct World;
+
+	LF_API World *LoadWorldAsQTree(std::string name, std::string filename);
+	LF_API World *LoadWorldAsTiled(std::string name, std::string filename);
+
 	// -----------------------------------------------------------------------------Lucy Framework
 	
 	struct Lucy;

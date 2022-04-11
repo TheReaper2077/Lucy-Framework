@@ -3,10 +3,10 @@
 extern std::shared_ptr<OpenGLContext> gl_context;
 
 // experimental Haven't Tested
-SpriteAtlas *Texture_SpriteAtlas_LoadFile(int tilew, int tileh, const char* filename) {
+TextureArray *Texture_SpriteAtlas_LoadFile(int tilew, int tileh, const char* filename) {
 	assert(gl_context != nullptr);
 
-	auto spriteatlas = std::make_shared<SpriteAtlas>();
+	auto spriteatlas = std::make_shared<TextureArray>();
 
 	spriteatlas->texture = Texture_Create();
 	TextureArray_Bind(spriteatlas->texture);

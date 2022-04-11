@@ -29,7 +29,7 @@ struct UniformBuffer;
 struct Shader;
 
 struct Texture;
-struct SpriteAtlas;
+struct TextureArray;
 
 struct FrameBuffer;
 struct TextureColorBuffer;
@@ -114,7 +114,7 @@ GL_API void Texture_BindUnit(Texture *texture, uint32_t unit);
 GL_API void Texture_UnBind();
 GL_API void TextureArray_Bind(Texture *texture);
 GL_API void TextureArray_UnBind();
-GL_API SpriteAtlas *Texture_SpriteAtlas_LoadFile(int tilew, int tileh, const char* filename);
+GL_API TextureArray *Texture_SpriteAtlas_LoadFile(int tilew, int tileh, const char* filename);
 
 // #endif
 

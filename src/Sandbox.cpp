@@ -20,7 +20,7 @@ std::vector<Vec3> vertices = {
 lf::Mesh* mesh;
 static Shader* shader;
 
-SpriteAtlas *atlas;
+TextureArray *atlas;
 
 void Sandbox::Init() {
 	lf::CreateCamera("cam0", lf::ORTHOGRAPHIC);
@@ -31,6 +31,8 @@ void Sandbox::Init() {
 
 	auto* tex = Texture_LoadFile("D:\\C++\\Lucy Framework\\res\\blocks.png");
 	auto* tile = lf::LoadTile(tex, Vec2(80, 80), Vec2(80, 80));
+
+	lf::LoadTileset("skda", "D:\\C++\\Lucy Framework\\res\\Tileset.json");
 
 	lf::RenderRect(mesh, tile, Vec3(0, 0), Vec3(100, 100));
 

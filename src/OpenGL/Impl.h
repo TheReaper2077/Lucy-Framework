@@ -11,7 +11,7 @@ struct OpenGLContext {
 	std::vector<std::shared_ptr<UniformBuffer>> uniform_buffer_store;
 	std::vector<std::shared_ptr<Shader>> shader_store;
 	std::vector<std::shared_ptr<Texture>> texture_store;
-	std::vector<std::shared_ptr<SpriteAtlas>> sprite_atlas_store;
+	std::vector<std::shared_ptr<TextureArray>> sprite_atlas_store;
 
 	VertexArrayId binding_vertexarray;
 	VertexBufferId binding_vertexbuffer;
@@ -78,7 +78,7 @@ struct Texture {
 	uint32_t width, height, channels;
 };
 
-struct SpriteAtlas {
+struct TextureArray {
 	Texture *texture = nullptr;
 	std::vector<SpriteId> sprites;
 
