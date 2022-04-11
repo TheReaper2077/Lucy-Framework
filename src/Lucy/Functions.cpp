@@ -90,7 +90,7 @@ void lf::RenderRect(Mesh* mesh, const Vec3& pos, const Vec3& scale, const Vec3& 
 			mesh->vertices.emplace_back(Vec3(pos.x + scale.x, pos.y, pos.z));
 			mesh->vertices.emplace_back(color);
 
-			mesh->vertxcount += 4;
+			mesh->vertexcount += 4;
 
 			if (mesh->vertexcount * 1.5 > mesh->meshindices->indexcount) {
 				mesh->meshindices->indices.reserve(6 + mesh->meshindices->indices.size());
