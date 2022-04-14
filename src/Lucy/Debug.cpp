@@ -50,6 +50,7 @@ void lf::DebugUpdate() {
 		if (ImGui::Begin("Debug")) {
 			
 		}
+		ImGui::End();
 	}
 }
 

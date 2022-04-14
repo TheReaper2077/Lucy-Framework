@@ -34,6 +34,8 @@ namespace lf {
 	LF_API bool IsMouseToggled(int button);
 	LF_API double GetMousePosX();
 	LF_API double GetMousePosY();
+	LF_API Vec2 MouseGetVec2();
+	LF_API Vec3 MouseGetVec3();
 
 	// -----------------------------------------------------------------------------Mesh
 

@@ -2,7 +2,7 @@
 
 extern std::shared_ptr<lf::Lucy> lf_context;
 
-lf::TexTile* LoadTile(const char* filename, const Vec2& pos, const Vec2& scale, bool normalized) {
+lf::TexTile* lf::LoadTile(const char* filename, const Vec2& pos, const Vec2& scale, bool normalized) {
 	return lf::LoadTile(Texture_LoadFile(filename), pos, scale, normalized);
 }
 

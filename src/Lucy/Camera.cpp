@@ -5,12 +5,14 @@ extern std::shared_ptr<lf::Lucy> lf_context;
 lf::Camera* lf::CreateCamera(std::string name, ProjectionMode mode) {
 	LF_ASSERT(lf_context != nullptr);
 
-	LF_DISABLE_ASSERT(mode != lf::PERSPECTIVE);
+	// LF_DISABLE_ASSERT(mode != lf::PERSPECTIVE);
 
 	auto camera = std::make_shared<lf::Camera>();
 
 	if (mode == lf::ORTHOGRAPHIC) {
-		camera->projection = glm::ortho<float>(-WIDTH/2, WIDTH/2, HEIGHT/2, -HEIGHT/2, -1000, 1000);
+		// camera->projection = glm::ortho<float>(-(WIDTH/HEIGHT), (WIDTH/HEIGHT), 1, -1, -1000, 1000);
+		// camera->projection = glm::ortho<float>(-WIDTH/2, WIDTH/2, HEIGHT/2, -HEIGHT/2, -1000, 1000);
+		camera->projection = glm::ortho<float>(0, WIDTH, HEIGHT, 0, -1000, 1000);
 		camera->view = glm::mat4(1.0f);
 		camera->model = glm::mat4(1.0f);
 		camera->speed = 5.0f;
@@ -18,7 +20,7 @@ lf::Camera* lf::CreateCamera(std::string name, ProjectionMode mode) {
 	if (mode == lf::PERSPECTIVE) {
 		camera->projection = glm::perspective(glm::radians(45.0f), (float)WIDTH/HEIGHT, 0.001f, 1000.0f);
 		camera->view = glm::mat4(1.0f);
-		camera->model = glm::mat4(1.0f);
+		camera->model = glm::rotate(glm::mat4(1.0f), glm::radians(180.0f), glm::vec3(0, 0, 1));
 		camera->speed = 0.05f;
 	}
 

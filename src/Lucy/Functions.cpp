@@ -2,6 +2,7 @@
 
 void lf::RenderRect(Mesh* mesh, TexTile *tex, const Vec3& pos, const Vec3& scale, bool enable_indexing) {
 	LF_ASSERT(mesh->layout == lf::Vertex3D);
+	LF_ASSERT(tex->texture != nullptr);
 	lf::RenderRect(mesh, tex->texture, pos, scale, tex->uv0, tex->uv1, enable_indexing);
 }
 
@@ -40,11 +41,11 @@ void lf::RenderRect(lf::Mesh* mesh, Texture *tex, const Vec3& pos, const Vec3& s
 		mesh->vertices.emplace_back(Vec3(pos.x, pos.y, pos.z));
 		mesh->vertices.emplace_back(Vec3(uv0.x, uv0.y, tex_index));
 		mesh->vertices.emplace_back(Vec3(pos.x, pos.y + scale.y, pos.z));
-		mesh->vertices.emplace_back(Vec3(uv0.x, uv0.y, tex_index));
+		mesh->vertices.emplace_back(Vec3(uv0.x, uv1.y, tex_index));
 		mesh->vertices.emplace_back(Vec3(pos.x + scale.x, pos.y + scale.y, pos.z));
-		mesh->vertices.emplace_back(Vec3(uv0.x, uv0.y, tex_index));
+		mesh->vertices.emplace_back(Vec3(uv1.x, uv1.y, tex_index));
 		mesh->vertices.emplace_back(Vec3(pos.x + scale.x, pos.y, pos.z));
-		mesh->vertices.emplace_back(Vec3(uv0.x, uv0.y, tex_index));
+		mesh->vertices.emplace_back(Vec3(uv1.x, uv0.y, tex_index));
 
 		mesh->vertexcount += 4;
 

@@ -82,7 +82,7 @@ namespace lf {
 		std::string tilesetname;
 		std::string transparentcolor;
 
-		std::unordered_map<SpriteId, TexTile*> sprite_map;
+		std::unordered_map<uint32_t, TexTileId> sprite_map;
 		
 		TextureArray *spriteatlas = nullptr;
 	};

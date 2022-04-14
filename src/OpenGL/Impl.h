@@ -80,13 +80,9 @@ struct Texture {
 
 struct TextureArray {
 	Texture *texture = nullptr;
-	std::vector<SpriteId> sprites;
 
-	uint32_t total_tiles;
-	uint32_t x_tiles;
-	uint32_t y_tiles;
-	uint32_t x_offset;
-	uint32_t y_offset;
-	uint32_t x_scale;
-	uint32_t y_scale;
+	int tilecount;
+	int tileheight;
+	int tilewidth;
+	int columns;
 };

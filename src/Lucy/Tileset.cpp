@@ -10,23 +10,27 @@ lf::Tileset* lf::LoadTileset(std::string name, std::string filename) {
 
 	auto tileset = std::make_shared<lf::Tileset>();
 
-	nlohmann::json j;
+	nlohmann::json json;
 	std::ifstream file(filename.c_str());
-	file >> j;
+	file >> json;
 
-	for (auto& element: j.items()) {
-		if (element.key() == "columns") tileset->columns = element.value();
-		if (element.key() == "imageheight") tileset->imageheight = element.value();
-		if (element.key() == "imagewidth") tileset->imagewidth = element.value();
-		if (element.key() == "margin") tileset->margin = element.value();
-		if (element.key() == "spacing") tileset->spacing = element.value();
-		if (element.key() == "tilecount") tileset->tilecount = element.value();
-		if (element.key() == "tileheight") tileset->tileheight = element.value();
-		if (element.key() == "tilewidth") tileset->tilewidth = element.value();
-		if (element.key() == "image") tileset->image = element.value();
-		if (element.key() == "name") tileset->name = element.value();
-		if (element.key() == "tilesetname") tileset->tilesetname = element.value();
-		if (element.key() == "transparentcolor") tileset->transparentcolor = element.value();
+	tileset->columns = json["columns"];
+	tileset->imageheight = json["imageheight"];
+	tileset->imagewidth = json["imagewidth"];
+	tileset->margin = json["margin"];
+	tileset->spacing = json["spacing"];
+	tileset->tilecount = json["tilecount"];
+	tileset->tileheight = json["tileheight"];
+	tileset->tilewidth = json["tilewidth"];
+	tileset->image = json["image"];
+	tileset->name = json["name"];
+	tileset->tilesetname = json["tilesetname"];
+	tileset->transparentcolor = json["transparentcolor"];
+
+	tileset->sprite_map.reserve(tileset->tilecount);
+
+	for (int i = 0; i < tileset->tilecount; i++) {
+		// tileset->sprite_map.emplace_back(lf::LoadTile());
 	}
 
 	lf_context->tileset_map[name] = tileset;

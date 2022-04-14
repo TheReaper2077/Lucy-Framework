@@ -80,3 +80,15 @@ double lf::GetMousePosY() {
 
 	return lf_context->event->ypos;
 }
+
+Vec3 lf::MouseGetVec3() {
+	LF_ASSERT(lf_context->event != nullptr);
+
+	return Vec3(lf_context->event->xpos, lf_context->event->ypos);
+}
+
+Vec2 lf::MouseGetVec2() {
+	LF_ASSERT(lf_context->event != nullptr);
+
+	return Vec2(lf_context->event->xpos, lf_context->event->ypos);
+}

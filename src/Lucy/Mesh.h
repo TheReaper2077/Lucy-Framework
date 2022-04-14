@@ -18,6 +18,7 @@ void lf::ClearMesh(T* mesh) {
 	mesh->vertexcount = 0;
 	mesh->textures.clear();
 	mesh->vertices.clear();
+	mesh->next_texture_unit = 0;
 
 	if (mesh->meshindices != nullptr) {
 		mesh->meshindices->indices.clear();

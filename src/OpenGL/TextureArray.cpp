@@ -3,7 +3,7 @@
 extern std::shared_ptr<OpenGLContext> gl_context;
 
 // experimental Haven't Tested
-TextureArray *Texture_SpriteAtlas_LoadFile(int tilew, int tileh, const char* filename) {
+TextureArray *TextureArray_LoadFile(int tilew, int tileh, const char* filename) {
 	assert(gl_context != nullptr);
 
 	auto spriteatlas = std::make_shared<TextureArray>();
@@ -28,7 +28,7 @@ TextureArray *Texture_SpriteAtlas_LoadFile(int tilew, int tileh, const char* fil
 	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	SpriteId nextsprite = 0;
+	int offset = 0;
 	unsigned char* tmp = (unsigned char*)alloca(tileh*tilew*channels);
 
 	for (int y = 0; y != tiley; y++) {
@@ -45,27 +45,28 @@ TextureArray *Texture_SpriteAtlas_LoadFile(int tilew, int tileh, const char* fil
 
 			switch (channels) {
 				case 4:
-					glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, nextsprite, tilew, tileh, 1, GL_RGBA, GL_UNSIGNED_BYTE, tmp);
+					glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, offset, tilew, tileh, 1, GL_RGBA, GL_UNSIGNED_BYTE, tmp);
 					break;
 					
 				case 3:
-					glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, nextsprite, tilew, tileh, 1, GL_RGB, GL_UNSIGNED_BYTE, tmp);
+					glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, offset, tilew, tileh, 1, GL_RGB, GL_UNSIGNED_BYTE, tmp);
 					break;
 				
 				default:
 					assert(false);
 			}
 
-			spriteatlas->sprites.push_back(nextsprite);
-			nextsprite++;
+			offset++;
 		}
 	}
 
 	stbi_image_free(data);
 
-	spriteatlas->texture->width = width;
-	spriteatlas->texture->height = height;
 	spriteatlas->texture->channels = channels;
+	spriteatlas->tilecount = offset;
+	spriteatlas->tileheight = tileh;
+	spriteatlas->tilewidth = tilew;
+	spriteatlas->columns = tilex;
 
 	gl_context->sprite_atlas_store.push_back(spriteatlas);
 

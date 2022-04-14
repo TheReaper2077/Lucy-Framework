@@ -21,8 +21,6 @@ struct Vec3T {
 		return Vec3T<T>(x/mag, y/mag, z/mag);
 	}
 
-	bool intersects(const Vec3T &);
-
 	Vec3T<T> cross(const Vec3T &) const;
 
 	bool operator!=(const Vec3T &) const;
@@ -32,13 +30,6 @@ struct Vec3T {
 	bool operator>=(const Vec3T &) const;
 	bool operator<=(const Vec3T &) const;
 	
-	bool operator!=(const T &) const;
-	bool operator==(const T &) const;
-	bool operator>(const T &) const;
-	bool operator<(const T &) const;
-	bool operator>=(const T &) const;
-	bool operator<=(const T &) const;
-	
 	Vec3T<T> operator+(const Vec3T &) const;
 	Vec3T<T> operator-(const Vec3T &) const;
 	Vec3T<T> operator*(const Vec3T &) const;
@@ -46,17 +37,8 @@ struct Vec3T {
 	Vec3T<T> operator&(const Vec3T &) const;
 	Vec3T<T> operator|(const Vec3T &) const;
 	Vec3T<T> operator^(const Vec3T &) const;
-	
-	Vec3T<T> operator+(const T &) const;
-	Vec3T<T> operator-(const T &) const;
-	Vec3T<T> operator*(const T &) const;
-	Vec3T<T> operator/(const T &) const;
-	Vec3T<T> operator&(const T &) const;
-	Vec3T<T> operator|(const T &) const;
-	Vec3T<T> operator^(const T &) const;
 
 	void operator=(const Vec3T &);
-
 	void operator+=(const Vec3T &);
 	void operator-=(const Vec3T &);
 	void operator*=(const Vec3T &);
@@ -64,13 +46,33 @@ struct Vec3T {
 	void operator&=(const Vec3T &);
 	void operator|=(const Vec3T &);
 	void operator^=(const Vec3T &);
+	
+	template <typename R> bool operator!=(const R &) const;
+	template <typename R> bool operator==(const R &) const;
+	template <typename R> bool operator>(const R &) const;
+	template <typename R> bool operator<(const R &) const;
+	template <typename R> bool operator>=(const R &) const;
+	template <typename R> bool operator<=(const R &) const;
+	
+	template <typename R> Vec3T<T> operator+(const R &) const;
+	template <typename R> Vec3T<T> operator-(const R &) const;
+	template <typename R> Vec3T<T> operator*(const R &) const;
+	template <typename R> Vec3T<T> operator/(const R &) const;
+	template <typename R> Vec3T<T> operator&(const R &) const;
+	template <typename R> Vec3T<T> operator|(const R &) const;
+	template <typename R> Vec3T<T> operator^(const R &) const;
+
+	template <typename R> void operator=(const R &);
+	template <typename R> void operator+=(const R &);
+	template <typename R> void operator-=(const R &);
+	template <typename R> void operator*=(const R &);
+	template <typename R> void operator/=(const R &);
+	template <typename R> void operator&=(const R &);
+	template <typename R> void operator|=(const R &);
+	template <typename R> void operator^=(const R &);
 
 	T& operator[](int i);
 };
-
-// template <typename T> bool Vec3T<T>::intersects(const Vec3T<T> &tmp) const {
-// 	// return (x );
-// }
 
 template <typename T>
 inline T& Vec3T<T>::operator[](int i) {
@@ -151,25 +153,6 @@ template <typename T> bool Vec3T<T>::operator<=(const Vec3T &tmp) const {
 	return (x <= tmp.x && y <= tmp.y && z <= tmp.z);
 }
 
-template <typename T> bool Vec3T<T>::operator!=(const T &tmp) const {
-	return (x != tmp && y != tmp && z != tmp);
-}
-template <typename T> bool Vec3T<T>::operator==(const T &tmp) const {
-	return (x == tmp && y == tmp && z == tmp);
-}
-template <typename T> bool Vec3T<T>::operator>(const T &tmp) const {
-	return (x > tmp && y > tmp && z > tmp);
-}
-template <typename T> bool Vec3T<T>::operator<(const T &tmp) const {
-	return (x < tmp && y < tmp && z < tmp);
-}
-template <typename T> bool Vec3T<T>::operator>=(const T &tmp) const {
-	return (x >= tmp && y >= tmp && z >= tmp);
-}
-template <typename T> bool Vec3T<T>::operator<=(const T &tmp) const {
-	return (x <= tmp && y <= tmp && z <= tmp);
-}
-
 template <typename T> Vec3T<T> Vec3T<T>::operator+(const Vec3T &tmp) const {
 	return Vec3T(x + tmp.x, y + tmp.y, z + tmp.z);
 }
@@ -192,25 +175,85 @@ template <typename T> Vec3T<T> Vec3T<T>::operator^(const Vec3T &tmp) const {
 	return Vec3T(x ^ tmp.x, y ^ tmp.y, z ^ tmp.z);
 }
 
-template <typename T> Vec3T<T> Vec3T<T>::operator+(const T &tmp) const {
+template <typename T> template <typename R> void Vec3T<T>::operator=(const R &tmp) {
+	x = tmp;
+	y = tmp;
+	z = tmp;
+}
+template <typename T> template <typename R> void Vec3T<T>::operator+=(const R &tmp) {
+	x += tmp;
+	y += tmp;
+	z += tmp;
+}
+template <typename T> template <typename R> void Vec3T<T>::operator-=(const R &tmp) {
+	x -= tmp;
+	y -= tmp;
+	z -= tmp;
+}
+template <typename T> template <typename R> void Vec3T<T>::operator*=(const R &tmp) {
+	x *= tmp;
+	y *= tmp;
+	z *= tmp;
+}
+template <typename T> template <typename R> void Vec3T<T>::operator/=(const R &tmp) {
+	x /= tmp;
+	y /= tmp;
+	z /= tmp;
+}
+template <typename T> template <typename R> void Vec3T<T>::operator&=(const R &tmp) {
+	x &= tmp;
+	y &= tmp;
+	z &= tmp;
+}
+template <typename T> template <typename R> void Vec3T<T>::operator|=(const R &tmp) {
+	x |= tmp;
+	y |= tmp;
+	z |= tmp;
+}
+template <typename T> template <typename R> void Vec3T<T>::operator^=(const R &tmp) {
+	x ^= tmp;
+	y ^= tmp;
+	z ^= tmp;
+}
+
+template <typename T> template <typename R> bool Vec3T<T>::operator!=(const R &tmp) const {
+	return (x != tmp && y != tmp && z != tmp);
+}
+template <typename T> template <typename R> bool Vec3T<T>::operator==(const R &tmp) const {
+	return (x == tmp && y == tmp && z == tmp);
+}
+template <typename T> template <typename R> bool Vec3T<T>::operator>(const R &tmp) const {
+	return (x > tmp && y > tmp && z > tmp);
+}
+template <typename T> template <typename R> bool Vec3T<T>::operator<(const R &tmp) const {
+	return (x < tmp && y < tmp && z < tmp);
+}
+template <typename T> template <typename R> bool Vec3T<T>::operator>=(const R &tmp) const {
+	return (x >= tmp && y >= tmp && z >= tmp);
+}
+template <typename T> template <typename R> bool Vec3T<T>::operator<=(const R &tmp) const {
+	return (x <= tmp && y <= tmp && z <= tmp);
+}
+
+template <typename T> template <typename R> Vec3T<T> Vec3T<T>::operator+(const R &tmp) const {
 	return Vec3T(x + tmp, y + tmp, z + tmp);
 }
-template <typename T> Vec3T<T> Vec3T<T>::operator-(const T &tmp) const {
+template <typename T> template <typename R> Vec3T<T> Vec3T<T>::operator-(const R &tmp) const {
 	return Vec3T(x - tmp, y - tmp, z - tmp);
 }
-template <typename T> Vec3T<T> Vec3T<T>::operator*(const T &tmp) const {
+template <typename T> template <typename R> Vec3T<T> Vec3T<T>::operator*(const R &tmp) const {
 	return Vec3T(x * tmp, y * tmp, z * tmp);
 }
-template <typename T> Vec3T<T> Vec3T<T>::operator/(const T &tmp) const {
+template <typename T> template <typename R> Vec3T<T> Vec3T<T>::operator/(const R &tmp) const {
 	return Vec3T(x / tmp, y / tmp, z / tmp);
 }
-template <typename T> Vec3T<T> Vec3T<T>::operator&(const T &tmp) const {
+template <typename T> template <typename R> Vec3T<T> Vec3T<T>::operator&(const R &tmp) const {
 	return Vec3T(x & tmp, y & tmp, z & tmp);
 }
-template <typename T> Vec3T<T> Vec3T<T>::operator|(const T &tmp) const {
+template <typename T> template <typename R> Vec3T<T> Vec3T<T>::operator|(const R &tmp) const {
 	return Vec3T(x | tmp, y | tmp, z | tmp);
 }
-template <typename T> Vec3T<T> Vec3T<T>::operator^(const T &tmp) const {
+template <typename T> template <typename R> Vec3T<T> Vec3T<T>::operator^(const R &tmp) const {
 	return Vec3T(x ^ tmp, y ^ tmp, z ^ tmp);
 }
 
