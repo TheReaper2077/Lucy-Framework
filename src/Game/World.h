@@ -1,3 +1,9 @@
 #pragma once
 
-#include "Chunk.h"
+#include "ChunkColumn.h"
+
+class World {
+private:
+public:
+	void Update();
+};

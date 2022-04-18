@@ -112,7 +112,7 @@ void lf::RenderMesh(T* mesh, Shader* shader) {
 			break;
 		case lf::MeshType::TRIANGLE_INDEXED:
 			VertexArray_BindIndexBuffer(mesh->vertexarray, mesh->meshindices->indexbuffer);
-			glDrawElements(GL_TRIANGLES, mesh->meshindices->indexcount, GL_UNSIGNED_INT, nullptr);
+			glDrawElements(GL_TRIANGLES, mesh->vertexcount * 1.5, GL_UNSIGNED_INT, nullptr);
 			break;
 	}	
 };
