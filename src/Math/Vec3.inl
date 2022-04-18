@@ -85,6 +85,8 @@ inline T& Vec3T<T>::operator[](int i) {
 			return y;
 		case 2:
 			return z;
+		default:
+			assert(false);
 	}
 }
 
@@ -259,5 +261,5 @@ template <typename T> template <typename R> Vec3T<T> Vec3T<T>::operator^(const R
 
 using Vec3 = Vec3T<float>;
 using Vec3d = Vec3T<double>;
-using Vec3i = Vec3T<int>;
+using IVec3 = Vec3T<int>;
 using Vec3ui = Vec3T<unsigned int>;

@@ -26,6 +26,7 @@ lf::Camera* lf::CreateCamera(std::string name, ProjectionMode mode) {
 
 	camera->mode = mode;
 	camera->name = name;
+	camera->mouse_enabled = true;
 
 	lf_context->camera_map[name] = camera;
 

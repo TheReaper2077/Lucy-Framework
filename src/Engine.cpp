@@ -61,6 +61,7 @@ void Engine::Init() {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	lf::CreateContext();
+	lf::GetContext()->window = window;
 
 	for (auto& layer: layers) {
 		layer->SetWindow(window);

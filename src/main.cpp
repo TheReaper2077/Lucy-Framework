@@ -9,8 +9,8 @@
 int main() {
 	Engine engine;
 
-	 engine.AddLayer<Sandbox>();
-	// engine.AddLayer<Game>();
+	// engine.AddLayer<Sandbox>();
+	engine.AddLayer<Game>();
 
 	engine.Init();
 	engine.Mainloop();

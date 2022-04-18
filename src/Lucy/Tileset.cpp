@@ -4,7 +4,7 @@
 
 extern std::shared_ptr<lf::Lucy> lf_context;
 
-lf::Tileset* lf::LoadTileset(std::string name, std::string filename) {
+lf::Tileset* lf::LoadTileset(std::string name, std::string filename, bool tile_array) {
 	LF_ASSERT(lf_context != nullptr);
 	LF_ASSERT(lf_context->tileset_map.find(name) == lf_context->tileset_map.end());
 
@@ -15,23 +15,22 @@ lf::Tileset* lf::LoadTileset(std::string name, std::string filename) {
 	file >> json;
 
 	tileset->columns = json["columns"];
-	tileset->imageheight = json["imageheight"];
-	tileset->imagewidth = json["imagewidth"];
-	tileset->margin = json["margin"];
-	tileset->spacing = json["spacing"];
-	tileset->tilecount = json["tilecount"];
-	tileset->tileheight = json["tileheight"];
-	tileset->tilewidth = json["tilewidth"];
-	tileset->image = json["image"];
-	tileset->name = json["name"];
-	tileset->tilesetname = json["tilesetname"];
-	tileset->transparentcolor = json["transparentcolor"];
+	// tileset->imageheight = json["imageheight"];
+	// tileset->imagewidth = json["imagewidth"];
+	// tileset->margin = json["margin"];
+	// tileset->spacing = json["spacing"];
+	// tileset->tilecount = json["tilecount"];
+	// tileset->tileheight = json["tileheight"];
+	// tileset->tilewidth = json["tilewidth"];
+	// tileset->image = json["image"];
+	// tileset->name = json["name"];
+	// tileset->tilesetname = json["tilesetname"];
+	// std::cout << json["transparentcolor"] << '\n';
 
-	tileset->sprite_map.reserve(tileset->tilecount);
-
-	for (int i = 0; i < tileset->tilecount; i++) {
-		// tileset->sprite_map.emplace_back(lf::LoadTile());
-	}
+	// std::size_t index = filename.find(tileset->name + std::string(".json"));
+	// std::cout << index << '\n';
+	// std::string 
+	// tileset->spriteatlas = TextureArray_LoadFile(tileset->tilewidth, tileset->tileheight, tileset->name);
 
 	lf_context->tileset_map[name] = tileset;
 

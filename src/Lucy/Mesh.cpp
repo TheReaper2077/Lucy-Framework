@@ -29,7 +29,7 @@ lf::Mesh* lf::CreateMesh(lf::Layout layout, lf::MeshType type, lf::MeshIndices* 
 		}
 	}	
 
-	lf_context->mesh_store.push_back(mesh);
+	lf_context->mesh_store.push_back(std::static_pointer_cast<lf::MeshTemplate>(mesh));
 
 	return mesh.get();
 }
@@ -52,5 +52,3 @@ void lf::TransferMeshIndices(lf::MeshIndices* meshindices) {
 	IndexBuffer_AddData(meshindices->indexbuffer, meshindices->indices.data(), meshindices->indices.size()*sizeof(uint32_t));
 	meshindices->indexcount = meshindices->indices.size();
 }
-
-

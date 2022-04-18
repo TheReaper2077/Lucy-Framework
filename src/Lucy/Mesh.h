@@ -1,16 +1,15 @@
 #pragma once
 
-#ifndef LF_API
 #include "Lucy.h"
-#endif
 
 // All Templated Functions
 
 template <typename T>
 void lf::RegisterLayout(const std::vector<VertexArrayLayout>& layouts) {
-	assert(lf::GetContext()->layout_vao_map.find(typeid(T).hash_code) == lf::GetContext()->layout_vao_map.end());
+	std::size_t hash = typeid(T).hash_code();
+	LF_ASSERT(lf::GetContext()->layout_vao_map.find(hash) == lf::GetContext()->layout_vao_map.end());
 	
-	lf::GetContext()->layout_vao_map[typeid(T).hash_code] = VertexArray_Create(layouts);
+	lf::GetContext()->layout_vao_map[hash] = VertexArray_Create(layouts);
 };
 
 template <typename T>
@@ -27,13 +26,12 @@ void lf::ClearMesh(T* mesh) {
 }
 
 template <typename T>
-lf::MeshT<T>* CreateMesh(lf::MeshType type, lf::MeshIndices* meshindices = nullptr) {
-
+lf::MeshT<T>* lf::CreateMesh(lf::MeshType type, lf::MeshIndices* meshindices) {
 	auto mesh = std::make_shared<lf::MeshT<T>>();
 	mesh->type = type;
 
 	mesh->vertexbuffer = VertexBuffer_Create();
-	mesh->vertexarray = lf::GetContext()->layout_vao_map[typeid(T).hash_code];
+	mesh->vertexarray = lf::GetContext()->layout_vao_map[typeid(T).hash_code()];
 	
 	if (type == lf::MeshType::TRIANGLE_INDEXED) {
 		if (meshindices != nullptr) {
@@ -45,11 +43,11 @@ lf::MeshT<T>* CreateMesh(lf::MeshType type, lf::MeshIndices* meshindices = nullp
 		}
 
 		if (mesh->meshindices->indexbuffer == nullptr) {
-			mesh->meshindices->indexbuffer = IndexBuffer_Create(lf::GetContext()->layout_vao_map[typeid(T).hash_code]);
+			mesh->meshindices->indexbuffer = IndexBuffer_Create(lf::GetContext()->layout_vao_map[typeid(T).hash_code()]);
 		}
 	}	
 
-	lf::GetContext()->mesh_store.push_back(std::static_pointer_cast<lf::Mesh>(mesh));
+	lf::GetContext()->mesh_store.push_back(std::static_pointer_cast<lf::MeshTemplate>(mesh));
 
 	return mesh.get();
 };
@@ -65,10 +63,10 @@ void lf::TransferMesh(T* mesh) {
 	VertexBuffer_Allocate(mesh->vertexbuffer, mesh->vertices.size() * sizeof(mesh->vertices[0]));
 	VertexBuffer_AddDataDynamic(mesh->vertexbuffer, mesh->vertices.data(), mesh->vertices.size() * sizeof(mesh->vertices[0]));
 
-	if (typeid(T) == typeid(lf::Mesh)) {
-		mesh->vertexcount = mesh->vertices.size()*sizeof(mesh->vertices[0]) / mesh->vertexarray->stride;
+	if (typeid(T).hash_code() == typeid(lf::Mesh).hash_code()) {
+		mesh->vertexcount = (uint32_t)(mesh->vertices.size()*sizeof(mesh->vertices[0]) / mesh->vertexarray->stride);
 	} else {
-		mesh->vertexcount = mesh->vertices.size();
+		mesh->vertexcount = (uint32_t)(mesh->vertices.size());
 	}
 
 	if (mesh->meshindices == nullptr) return;

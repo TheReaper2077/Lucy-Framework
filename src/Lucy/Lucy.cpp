@@ -13,12 +13,12 @@ void lf::CreateContext() {
 	lf::RegisterLayout(lf::Layout::Vertex3D, {
 		{0, 3, GL_FLOAT},
 		{1, 3, GL_FLOAT},
-		});
+	});
 	lf::RegisterLayout(lf::Layout::Vertex3DNormal, {
 		{0, 3, GL_FLOAT},
 		{1, 3, GL_FLOAT},
 		{2, 3, GL_FLOAT},
-		});
+	});
 
 	lf_context->mvp_ubo = UniformBuffer_Create();
 	UniformBuffer_Allocate(lf_context->mvp_ubo, 3 * sizeof(glm::mat4));
@@ -117,4 +117,18 @@ void lf::ToggleWireframe(bool wireframe) {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		lf_context->wireframe = wireframe;
 	}
+}
+
+void lf::DisableCursor() {
+	LF_ASSERT(lf_context != nullptr);
+	LF_ASSERT(lf_context->window);
+
+	glfwSetInputMode(lf_context->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+}
+
+void lf::EnableCursor() {
+	LF_ASSERT(lf_context != nullptr);
+	LF_ASSERT(lf_context->window);
+
+	glfwSetInputMode(lf_context->window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 }

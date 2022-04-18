@@ -102,7 +102,7 @@ namespace lf {
 
 	struct Tileset;
 
-	LF_API Tileset *LoadTileset(std::string name, std::string filename);
+	LF_API Tileset *LoadTileset(std::string name, std::string filename, bool tile_array = false);
 
 	// -----------------------------------------------------------------------------World
 
@@ -134,6 +134,9 @@ namespace lf {
 
 	LF_API void DebugInit();
 	LF_API void DebugUpdate();
+
+	LF_API void DisableCursor();
+	LF_API void EnableCursor();
 }
 
 #include "Impl.h"

@@ -23,7 +23,7 @@ namespace lf {
 		Layout layout;
 	};
 
-	template <typename T> struct MeshT {
+	struct MeshTemplate {
 		MeshType type;
 		Layout layout;
 		
@@ -31,10 +31,13 @@ namespace lf {
 		VertexBuffer* vertexbuffer = nullptr;
 		VertexArray* vertexarray = nullptr;
 
-		std::vector<T> vertices;
 		std::unordered_map<Texture*, uint32_t> textures;
 		uint32_t next_texture_unit = 0;
 		uint32_t vertexcount = 0;
+	};
+
+	template <typename T> struct MeshT: public MeshTemplate {
+		std::vector<T> vertices;
 	};
 
 	struct Camera {
@@ -88,7 +91,7 @@ namespace lf {
 	};
 
 	struct Lucy  {
-		std::vector<std::shared_ptr<Mesh>> mesh_store;
+		std::vector<std::shared_ptr<MeshTemplate>> mesh_store;
 		std::vector<std::shared_ptr<MeshIndices>> meshindices_store;
 
 		std::unordered_map<std::size_t, VertexArray*> layout_vao_map;
@@ -113,5 +116,7 @@ namespace lf {
 		bool wireframe = false;
 
 		TexTileId next_spriteid = 0;
+
+		GLFWwindow *window = nullptr;
 	};
 }
